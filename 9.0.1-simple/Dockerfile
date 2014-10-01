@@ -7,7 +7,7 @@ MAINTAINER Alkacon Software GmbH
 #
 # Use the following command to run:
 #  
-# docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-core:9.0.1-simple
+# docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.0.1-simple
 # 
 
 ENV ROOT_PWD mypassword
