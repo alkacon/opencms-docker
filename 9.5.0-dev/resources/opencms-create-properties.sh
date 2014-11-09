@@ -7,7 +7,7 @@ DB_USER=sa
 DB_PWD=$ROOT_PWD
 DB_DB=opencms
 DB_PRODUCT=hsqldb
-DB_URL="jdbc:hsqldb:file:${OPENCMS_HOME}/WEB-INF/hsqldb/opencms;shutdown=false;useUnicode=true;characterEncoding=UTF-8;hsqldb.tx=mvcc;hsqldb.lob_file_scale=2;hsqldb.log_size=10;hsqldb.defrag_limit=20"
+DB_URL="jdbc:hsqldb:file:${OPENCMS_HOME}/WEB-INF/hsqldb/opencms;shutdown=false;useUnicode=true;characterEncoding=UTF-8;hsqldb.tx=mvcc;hsqldb.lob_file_scale=4;hsqldb.log_size=10;hsqldb.defrag_limit=20"
 DB_DRIVER=org.hsqldb.jdbcDriver
 
 # Create setup.properties

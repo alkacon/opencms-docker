@@ -37,7 +37,6 @@ docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.0-simple
 This is a somwhat advanced OpenCms install with HSQLDB and Tomcat. Recommended for development use.
  
 The resulting image will be about 200MB smaller in size compared to the simple image.
-The spell check feature is disabled in this image to save size.
 OpenCms is installed in the `ROOT` webapp here, so the URL is shorter. 
 Moreover, the OpenCms repository SMB / network share feature is enabled, so you can directly connect your desktop to the repo.
 
@@ -57,7 +56,8 @@ docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.0-de
 * Connect the OpenCms repository to a network share on your desktop using the address `//your-host-ip/OPENCMS`.
   Use the default OpenCms user `Admin` and password `admin` to log in.
 * As always, **make sure that you change all default passwords** when you load the image for the first time.
-
+* The spell check feature is disabled in this image to save size.
+* The default password encryption is set to plain MD5 for fast user authentication.
 
 ##Supported OpenCms versions##
 

@@ -59,10 +59,11 @@ RUN \
     bash /opencms-postinstall.sh && \ 
 # Clean up
     chown -R tomcat7:tomcat7 ${OPENCMS_HOME} && \
-    rm /opencms.war /opencms-create-properties.sh /opencms-fetch.sh ${CONFIG_FILE}
+    mv /opencms-run.sh /root/ && \
+    rm -rf /opencms.war /opencms-*.sh ${CONFIG_FILE} /config
 
 # Run SSH, which allows us to conntect to the dockerized OpenCms instance
 EXPOSE 8080 
 EXPOSE 1445
 EXPOSE 22
-CMD ["/opencms-run.sh"]
+CMD ["/root/opencms-run.sh"]
