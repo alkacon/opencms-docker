@@ -12,7 +12,7 @@ cp /config/*.xml ${OPENCMS_HOME}/WEB-INF/config/
 # The spell check feature requires about 150 MB of disk space.
 # Since this is a development machine, this feature should not be required.
 sed -i "s/<core name=\"spellcheck\" instanceDir=\"..\/spellcheck\"\/>/ /" ${OPENCMS_HOME}/WEB-INF/solr/solr.xml
-set -i "s/<requesthandler class=\"org.opencms.main.OpenCmsSpellcheckHandler\"\/>/ /" ${OPENCMS_HOME}/WEB-INF/config/opencms-system.xml 
+sed -i "s/<requesthandler class=\"org.opencms.main.OpenCmsSpellcheckHandler\"\/>/ /" ${OPENCMS_HOME}/WEB-INF/config/opencms-system.xml 
 rm -f  ${OPENCMS_HOME}/WEB-INF/packages/modules/org.opencms.workplace.spellcheck*
 rm -rf ${OPENCMS_HOME}/WEB-INF/spellcheck
 
