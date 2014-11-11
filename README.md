@@ -34,7 +34,7 @@ docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.0-simple
 
 *Latest supported OpenCms version: 9.5.0*
 
-This is a somwhat advanced OpenCms install with HSQLDB and Tomcat. Recommended for development use.
+This is a more advanced OpenCms install with HSQLDB and Tomcat. Recommended for development use.
  
 The resulting image will be about 200MB smaller in size compared to the simple image.
 OpenCms is installed in the `ROOT` webapp here, so the URL is shorter. 

@@ -16,7 +16,7 @@ PROPERTIES="
 
 setup.webapp.path=$OPENCMS_HOME
 setup.default.webapp=
-setup.install.components=workplace,releasenotes,template3,devdemo,bootstrap
+setup.install.components=workplace,bootstrap,documentation
 setup.show.progress=true
 
 db.product=$DB_PRODUCT
