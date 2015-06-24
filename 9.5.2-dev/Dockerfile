@@ -7,7 +7,7 @@ MAINTAINER Alkacon Software GmbH
 #
 # Use the following command to run:
 #  
-# docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.1-dev
+# docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.2-dev
 # 
 
 ENV ROOT_PWD mypassword
@@ -38,7 +38,7 @@ RUN \
 COPY resources /
 
 # The OpenCms version to download and install
-ENV OPENCMS_URL http://www.opencms.org/downloads/opencms/opencms-9.5.1.zip
+ENV OPENCMS_URL http://www.opencms.org/downloads/opencms/opencms-9.5.2.zip
 
 RUN \
 # Fetch the OpenCms installation file and create the setup properties
