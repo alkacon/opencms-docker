@@ -3,13 +3,13 @@ opencms-docker
 
 ##Dockerfiles for OpenCms##
 
-These official Dockerfiles install various types of **OpenCms 9.5.2** systems with demo content. 
+These official Dockerfiles install various types of **OpenCms 9.5.3** systems with demo content. 
 The fully automated install downloads the OpenCms distribution files from `opencms.org`.
 Dockerfiles for older OpenCms versions are also provided, see below for a complete list.
 
 ###Basic image `simple`:###
 
-*Latest supported OpenCms version: 9.5.2*
+*Latest supported OpenCms version: 9.5.3*
 
 This is a basic OpenCms install with mySQL and Tomcat. 
 OpenCms has been installed like that for ages, and it just works. 
@@ -18,9 +18,9 @@ Best suited for evaluation and test purposes.
 Create the simple image and run the container with the following commands:
 
 ```Shell
-cd ~/opencms-docker/9.5.2-simple
-docker build -t alkacon/opencms-docker:9.5.2-simple .
-docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.2-simple
+cd ~/opencms-docker/9.5.3-simple
+docker build -t alkacon/opencms-docker:9.5.3-simple .
+docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.3-simple
 ```
 
 *`simple` image usage notes:*
@@ -32,7 +32,7 @@ docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.2-simple
 
 ###Development image `dev`:###
 
-*Latest supported OpenCms version: 9.5.2*
+*Latest supported OpenCms version: 9.5.3*
 
 This is a more advanced OpenCms install with HSQLDB and Tomcat. Recommended for development use.
  
@@ -43,9 +43,9 @@ Moreover, the OpenCms repository SMB / network share feature is enabled, so you 
 Create the development image and run the container with the following commands:
 
 ```Shell
-cd ~/opencms-docker/9.5.2-dev
-docker build -t alkacon/opencms-docker:9.5.2-dev .
-docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.2-dev
+cd ~/opencms-docker/9.5.3-dev
+docker build -t alkacon/opencms-docker:9.5.3-dev .
+docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.3-dev
 ```
 
 *`dev` image usage notes:*
@@ -63,6 +63,7 @@ docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.2-de
 
 The following versions are currently supported with Docker images:
 
+* OpenCms 9.5.3: `simple`, `dev`
 * OpenCms 9.5.2: `simple`, `dev`
 * OpenCms 9.5.1: `simple`, `dev`
 * OpenCms 9.5.0: `simple`, `dev`
