@@ -1,13 +1,44 @@
 opencms-docker
 ==============
+## Dockerfiles for OpenCms ##
+The official Dockerfile installs **OpenCms 10.0.0** with the demo.
+The fully automated install downloads the OpenCms distribution and demo modules from `artifacts.alkacon.com`.
+Dockerfiles for older OpenCms versions are also provided, see below.
 
-##Dockerfiles for OpenCms##
+### Default docker image ###
+
+*Latest supported OpenCms version: 10.0.0*
+
+This is a basic OpenCms install with mySQL and Tomcat. 
+OpenCms has been installed like that for ages, and it just works. 
+Best suited for evaluation and test purposes.
+
+Create the image and run the container with the following commands:
+
+```Shell
+cd ~/opencms-docker/10.0.0
+docker build -t alkacon/opencms-docker:10.0.0 .
+docker run -d -p 8080:8080 alkacon/opencms-docker:10.0.0
+```
+#### Additional options ####
+The image features several options that can be set when calling `docker run`. Just add environment variables via the `-e` option.
+
+Available options are (with default values handed over):
+
+ * `-e "OCCO_SERVER_NAME=http://localhost:8080"`
+ * `-e "OCCO_SERVER_ALIAS="` (none configured by default)
+ * `-e "OCCO_ADMIN_PASSWD=admin"`
+ * `-e "OCCO_USEPROXY=false"` (if set to `true` the "opencms" prefix is cut for internal links)
+ * `-e "OCCO_ENABLE_JLAN=false"` (if set to `true` the network share is enabled, use option `-p 1445:1445` to make it available at your host)
+ * `-e "OCCO_DEBUG=false"` (if set to `true` Tomcat starts in debug mode, use option `-p 8000:8000` to make the debug port available at your host)
+
+## Dockerfiles for previous OpenCms versions ##
 
 These official Dockerfiles install various types of **OpenCms 9.5.3** systems with demo content. 
 The fully automated install downloads the OpenCms distribution files from `opencms.org`.
 Dockerfiles for older OpenCms versions are also provided, see below for a complete list.
 
-###Basic image `simple`:###
+### Basic image `simple`: ###
 
 *Latest supported OpenCms version: 9.5.3*
 
@@ -30,7 +61,7 @@ docker run -d -p 8080:8080 -p 22000:22 alkacon/opencms-docker:9.5.3-simple
   The root password for the SSH login is set in the Dockerfile, the default being `mypassword`. 
 * As always, **make sure that you change all default passwords** when you load the image for the first time.
 
-###Development image `dev`:###
+### Development image `dev`: ###
 
 *Latest supported OpenCms version: 9.5.3*
 
@@ -59,10 +90,11 @@ docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.3-de
 * The spell check feature is disabled in this image to save size.
 * The default password encryption is set to plain MD5 for fast user authentication.
 
-##Supported OpenCms versions##
+## Supported OpenCms versions ##
 
 The following versions are currently supported with Docker images:
 
+* OpenCms 10.0.0 (just one image)
 * OpenCms 9.5.3: `simple`, `dev`
 * OpenCms 9.5.2: `simple`, `dev`
 * OpenCms 9.5.1: `simple`, `dev`
