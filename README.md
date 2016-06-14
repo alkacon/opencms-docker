@@ -13,7 +13,7 @@ This is a basic OpenCms install with mySQL and Tomcat.
 OpenCms has been installed like that for ages, and it just works. 
 Best suited for evaluation and test purposes.
 
-You can just run the image (without checkin out the repository at all) via
+You can just run the image (without checking out the repository at all) via
 
 ```Shell
 docker run -d -p 8080:8080 alkacon/opencms-docker:10.0.1
