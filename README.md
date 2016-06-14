@@ -1,25 +1,33 @@
 opencms-docker
 ==============
-## Dockerfiles for OpenCms ##
-The official Dockerfile installs **OpenCms 10.0.0** with the demo.
+## Dockerfiles for OpenCms 10.0.0 onwards ##
+The official Dockerfile installs OpenCms with the demo.
 The fully automated install downloads the OpenCms distribution and demo modules from `artifacts.alkacon.com`.
 Dockerfiles for older OpenCms versions are also provided, see below.
 
 ### Default docker image ###
 
-*Latest supported OpenCms version: 10.0.0*
+*Latest supported OpenCms version: 10.0.1*
 
 This is a basic OpenCms install with mySQL and Tomcat. 
 OpenCms has been installed like that for ages, and it just works. 
 Best suited for evaluation and test purposes.
 
-Create the image and run the container with the following commands:
+You can just run the image (without checkin out the repository at all) via
 
 ```Shell
-cd ~/opencms-docker/10.0.0
-docker build -t alkacon/opencms-docker:10.0.0 .
-docker run -d -p 8080:8080 alkacon/opencms-docker:10.0.0
+docker run -d -p 8080:8080 alkacon/opencms-docker:10.0.1
 ```
+
+When you check out the repository, you can create the image yourself and run it as container with the following commands:
+
+```Shell
+cd ~/opencms-docker/10.0.1
+docker build -t alkacon/opencms-docker:10.0.1 .
+docker run -d -p 8080:8080 alkacon/opencms-docker:10.0.1
+```
+To run or build images of older OpenCms version (>= 10.0.0) just replace the version number in all the above shell commands.
+
 #### Additional options ####
 The image features several options that can be set when calling `docker run`. Just add environment variables via the `-e` option.
 
@@ -94,6 +102,7 @@ docker run -d -p 80:8080 -p 22000:22 -p 445:1445 alkacon/opencms-docker:9.5.3-de
 
 The following versions are currently supported with Docker images:
 
+* OpenCms 10.0.1 (just one image)
 * OpenCms 10.0.0 (just one image)
 * OpenCms 9.5.3: `simple`, `dev`
 * OpenCms 9.5.2: `simple`, `dev`
