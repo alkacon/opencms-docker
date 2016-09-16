@@ -1,0 +1,30 @@
+{
+    "MountFolderBase":      "${WORKSPACE}/mount/",
+    "NetworkName":          "opencms",
+    "ImageRepository":      "${DOCKERREPO}",
+    "Container": [
+        {        
+            "Name":         "10.5.0-beta",
+            "ServerName":   "${MYIP}",
+            "Container":    "10.5.0-beta",
+            "Image":        "${ImageRepository}alkacon/images:10.5.0-beta",
+            "WebappMountPoint": "10_5_0-beta_webapp",
+            "VfsMount": {
+                "MountPoint":   "10_5_0-beta_vfs",
+                "UserId":       "$(id -u)",
+                "GroupId":      "$(id -g)"
+            },            
+            "Proxy":        "false",       
+            "ExtraParams":  "-p 80:8080 -p 445:1445 -e \"OCCO_ENABLE_JLAN=true\""   
+        }      
+    ],
+    "ImageBase":     		"${WORKSPACE}/opencms-docker",
+    "Image": [
+        {        
+            "Name":         "10.5.0-beta",
+            "Folder":       "10.5.0-beta",
+            "Image":        "${ImageRepository}alkacon/images:10.5.0-beta",
+            "From":         "java:8-jre"  
+        }
+    ] 
+}
