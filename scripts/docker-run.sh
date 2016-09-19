@@ -129,7 +129,7 @@ readArray() {
 # Set env variable for options.
 #
 setOptions() {
-    
+
     # check if stdout is a terminal...
     if test -t 1; then
         # see if it supports colors...
@@ -149,7 +149,7 @@ setOptions() {
             white="$(tput setaf 7)"
         fi
     fi
-        
+
     while true; do
         case "${1}" in
             --verbose ) 
@@ -255,7 +255,7 @@ initNetwork() {
         fi    
     fi
 }
-    
+
 ##################
 #
 # Check if container ${1} is up, set ${CO_STATUS} accordingly-
@@ -310,12 +310,12 @@ mountVfs() {
         echoError "nc (netcat) is not installed, unable to mount the VFS."
         return
     fi
-    
+
     echo ""
     echo "${cyan}Mounting the VFS for container \"${CO_CONTAINER}\" to \"${CO_VFS_MOUNT_POINT}\"${normal}"
     echoVerbose "Waiting for container to be ready ..."
     sleep 5
-        
+
     local __DOCKER_IP=$(docker inspect --format "{{ .NetworkSettings.Networks.${NET_NAME}.IPAddress }}" ${CO_CONTAINER})
     echoVerbose "Retrieved IP ${__DOCKER_IP} for docker ${CO_CONTAINER}"
     local __HAS_SHARE
@@ -360,6 +360,18 @@ umountVfs() {
 #
 dropContainer() {
     checkContainerStatus ${1}
+
+    if  [ -z "${OPT_STOP}" ] && [ -n "${DOCKER_RUN_SAFEMODE}" ]; then
+        # In safe mode we don't want to just kill the container
+        if [ ${CO_STATUS} == "stopped" ] || [ ${CO_STATUS} == "running" ]; then
+            echo ""
+            echo "${red}${bold}Container \"${1}\" still running or loaded!${normal}"
+            echo ""
+            echo "${red}Stop and remove the container using:${normal}"
+            echo "${yellow}${bold}docker-run --stop${normal}"
+            echoError "Exiting" 4
+        fi
+    fi  
     if [ ${CO_STATUS} == "running" ]; then
         echo "${green}Container ${cyan}\"${1}\"${green} is running, unmounting possible VFS mounts and stopping it${normal}"
         umountVfs "${1}"
@@ -367,7 +379,7 @@ dropContainer() {
         docker stop "${1}"
     else
         if [ -n "${OPT_STOP}" ]; then
-            echo "${red}Container \"${1}\" is not running, no need to stop it${normal}"
+            echo "Container \"${1}\" is not running, no need to stop it"
         fi      
     fi
     if [ ${CO_STATUS} == "stopped" ] || [ ${CO_STATUS} == "running" ]; then
@@ -384,7 +396,7 @@ dropContainer() {
 #
 initContainer() {
     CO_NAME=${1}
-    
+
     readConfig CO_CONTAINER "Container"
     CO_CONTAINER=${CO_CONTAINER:-$CO_NAME}
     echo ""
@@ -394,22 +406,22 @@ initContainer() {
     else
         echo "${red}STOPPING container ${cyan}\"${CO_CONTAINER}\"${normal}"
     fi
-    
+
     readConfig CO_IMAGE "Image"
-    
+
     if [ -z "${CO_IMAGE}" ]; then
         echoError "Could not find configuration for \"${CO_NAME}\" in JSON file!" 2
     fi
-    
+
     readConfig CO_PROXY "Proxy"
     readConfig CO_SERVER_NAME "ServerName"
     CO_SERVER_NAME=${CO_SERVER_NAME:-"http://${CO_CONTAINER}"}
-    
+
     echoVerbose "Container \"${CO_CONTAINER}\" uses server name \"${CO_SERVER_NAME}\""
-    
+
     readConfig CO_SERVER_ALIAS "ServerAlias"
     readConfig CO_PASSWORD "Password" "admin"
-    
+
     if [ -n "${MountFolderBase}" ]; then
         readConfig CO_WEBAPP_MOUNT_POINT "WebappMountPoint"
         composeAbsolutePath CO_WEBAPP_MOUNT_POINT "${MountFolderBase}" "Webapps"
@@ -422,12 +434,11 @@ initContainer() {
         readConfig CO_VFS_MOUNT_FILE_MODE "VfsMount.FileMode" "0644"
         readConfig CO_VFS_MOUNT_DIR_MODE "VfsMount.DirMode" "0775"
     fi
-    
+
     readConfig CO_DEBUG "Debug"    
     readConfig CO_EXTRA_PARAMS "ExtraParams"
     readArray CO_LINKS "Links"
 }
-
 
 ##################
 #
@@ -547,6 +558,14 @@ dropContainer ${CO_CONTAINER}
 
 if [ -z "${OPT_STOP}" ] ; then
 
+    # Make sure we have write permissions on the mounted folder
+    if [ -n "${DOCKER_RUN_FORCEWRITE}" ]; then
+        echo ""
+        echo "${red}Root permissions required: Plase enter password.${normal}"
+        echo ""
+        sudo whoami 
+    fi
+
     # build the container parameters in RUN_CMD environment variable
     createContainerParameters
 
@@ -571,11 +590,19 @@ if [ -z "${OPT_STOP}" ] ; then
         echoError "Failed to start the docker container. See the error message directly above." 5
     fi 
 
+    # Make sure we have write permissions on the mounted folder
+    if [ -n "${DOCKER_RUN_FORCEWRITE}" ] && [ -n "${CO_WEBAPP_MOUNT_POINT}" ]; then
+        echo ""
+        echo "Forcing a+w on mounted folder: ${CO_WEBAPP_MOUNT_POINT}"
+        echo ""    
+        sudo chmod -R a+w "${CO_WEBAPP_MOUNT_POINT}"
+    fi
+
     # Mount the VFS if a mount point is given
     if [ -n "${CO_VFS_MOUNT_POINT}" ]; then
         mountVfs
     fi
-    
+
 fi
 
 # remove old containers
@@ -584,7 +611,7 @@ if [ "${OPT_KEEP}" != "true" ]; then
     echo "${green}Removing all stale containers:${normal}"
     STALE_CONTAINERS=$(docker ps -a | grep "Exited " | awk '{ print $1; }')
     COUNT=$(echo "$STALE_CONTAINERS" | wc -m)
-    
+
     if [ $COUNT -gt 1 ]; then
         docker rm $STALE_CONTAINERS
     else
