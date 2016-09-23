@@ -86,7 +86,7 @@ composeAbsolutePath() {
     if [ ! -d "${__PATH}" ]; then
         echoError "The folder \"${__PATH}\" specified for ${3} does not exist."
     fi
-    eval ${__RESULT}="${__PATH}" 
+    eval ${__RESULT}="\"${__PATH}\"" 
 }
 
 ##################
@@ -435,7 +435,7 @@ fi
 if [ -n "${OPT_PUSH_TO}" ]; then
     echo ""
     echo "Tagging image as \"${OPT_PUSH_TO}/${IM_IMAGE}\""
-    docker tag -f "$IM_IMAGE" "${OPT_PUSH_TO}/${IM_IMAGE}"
+    docker tag "$IM_IMAGE" "${OPT_PUSH_TO}/${IM_IMAGE}"
     echo "Pushing \"${OPT_PUSH_TO}/${IM_IMAGE}\""
     docker push "${OPT_PUSH_TO}/${IM_IMAGE}"
 else

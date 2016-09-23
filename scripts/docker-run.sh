@@ -262,7 +262,7 @@ initNetwork() {
 #
 checkContainerStatus() {
     CO_STATUS_JSON=$(docker inspect ${1} 2> /dev/null)
-    CO_STATUS="unknown";    
+    CO_STATUS="unknown";
     if [ "${CO_STATUS_JSON}" != "[]" ]; then
         local __RUNNING=$(echo ${CO_STATUS_JSON} | jq -r ".[].State.Running")
         if [ ${__RUNNING} == "true" ]; then
@@ -380,7 +380,7 @@ dropContainer() {
     else
         if [ -n "${OPT_STOP}" ]; then
             echo "Container \"${1}\" is not running, no need to stop it"
-        fi      
+        fi
     fi
     if [ ${CO_STATUS} == "stopped" ] || [ ${CO_STATUS} == "running" ]; then
         echoVerbose "Container \"${1}\" is loaded, removing it"
@@ -458,7 +458,8 @@ runLinkedContainer() {
 # Combine the container parameter variables in ${RUN_CMD}. 
 #
 createContainerParameters() {
-    RUN_CMD="run -d --name=\"${CO_CONTAINER}\" --net=\"${NET_NAME}\" -h \"${CO_CONTAINER}\""
+    CO_HOSTNAME="${CO_CONTAINER//[._]/-}"
+    RUN_CMD="run -d --name=\"${CO_CONTAINER}\" --net=\"${NET_NAME}\" -h \"${CO_HOSTNAME}\""
     if [ -n "${CO_SERVER_NAME}" ] && [ "-" != "${CO_SERVER_NAME}" ] ; then 
         RUN_CMD="${RUN_CMD} -e \"OCCO_SERVER_NAME=${CO_SERVER_NAME}\"" 
     fi
@@ -560,10 +561,14 @@ if [ -z "${OPT_STOP}" ] ; then
 
     # Make sure we have write permissions on the mounted folder
     if [ -n "${DOCKER_RUN_FORCEWRITE}" ]; then
-        echo ""
-        echo "${red}Root permissions required: Plase enter password.${normal}"
-        echo ""
-        sudo whoami 
+        # Test if sudo permissions are already available
+        CAN_I_RUN_SUDO=$(sudo -n uptime 2>&1|grep "load"|wc -l)
+        if ! [ ${CAN_I_RUN_SUDO} -gt 0 ]; then
+            echo ""
+            echo "${red}sudo / root permissions required: Plase enter password.${normal}"
+            echo ""
+            sudo whoami 
+        fi
     fi
 
     # build the container parameters in RUN_CMD environment variable
@@ -590,6 +595,11 @@ if [ -z "${OPT_STOP}" ] ; then
         echoError "Failed to start the docker container. See the error message directly above." 5
     fi 
 
+    # Mount the VFS if a mount point is given
+    if [ -n "${CO_VFS_MOUNT_POINT}" ]; then
+        mountVfs
+    fi
+
     # Make sure we have write permissions on the mounted folder
     if [ -n "${DOCKER_RUN_FORCEWRITE}" ] && [ -n "${CO_WEBAPP_MOUNT_POINT}" ]; then
         echo ""
@@ -597,12 +607,6 @@ if [ -z "${OPT_STOP}" ] ; then
         echo ""    
         sudo chmod -R a+w "${CO_WEBAPP_MOUNT_POINT}"
     fi
-
-    # Mount the VFS if a mount point is given
-    if [ -n "${CO_VFS_MOUNT_POINT}" ]; then
-        mountVfs
-    fi
-
 fi
 
 # remove old containers
