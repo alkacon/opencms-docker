@@ -507,6 +507,10 @@ if [ -z "${JSON_INPUT}" ] || [ -z "${CONTAINER_NAME}" ]; then
     showUsage
 fi
 
+echoVerbose ""
+echoVerbose "${green}Using JSON input from: ${cyan}\"${JSON_INPUT}\"${normal}"
+echoVerbose "${green}Running container    : ${cyan}\"${CONTAINER_NAME}\"${normal}"
+
 # Initialize optional parameters
 if [ -z "${DOCKER_RUN_CONFIG}" ]; then
     setOptions "${@:3}"
