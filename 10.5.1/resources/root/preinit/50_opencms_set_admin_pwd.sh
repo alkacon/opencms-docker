@@ -2,11 +2,18 @@
 
 echo "Setting the Admin password if a new password is provided"
 if [ -z "$OCCO_ADMIN_PASSWD" ]; then
-    echo "No password set, keeping default: Admin admin"
-    exit 0
+    # Generates a random password using urandom that can contain letters, numbers, _, -, and +
+    OCCO_ADMIN_PASSWD=$(< /dev/urandom tr -dc [:alnum:]_+- | head -c12)
+    echo "No password configured. Creating new random password. Please, keep it safe!"
+    echo "-----------------------------------------------------------------------------"
+    echo "|                                                                           |"
+    echo "| Admin user:     Admin                                                     |"
+    echo "| Admin password: $OCCO_ADMIN_PASSWD                                              |"
+    echo "|                                                                           |"
+    echo "-----------------------------------------------------------------------------"
 fi 
 
-echo "Adjusting OpenCms Admin password to \"$OCCO_ADMIN_PASSWD\"."
+echo "Setting OpenCms Admin password to \"$OCCO_ADMIN_PASSWD\"."
 
 SCRIPT_FILE="/config/setup-admin-password.ocsh"
     
