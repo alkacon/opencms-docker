@@ -27,7 +27,6 @@ replaceModule "org.opencms.apollo.template.slider" "/artifacts/org.opencms.apoll
 replaceModule "org.opencms.apollo.template.slidercomplex" "/artifacts/org.opencms.apollo.template.slidercomplex.zip"
 replaceModule "org.opencms.apollo.template.shariff" "/artifacts/org.opencms.apollo.template.shariff.zip"
 replaceModule "org.opencms.apollo.template.tabs" "/artifacts/org.opencms.apollo.template.tabs.zip"
-replaceModule "org.opencms.apollo" "/artifacts/org.opencms.apollo.zip"
 replaceModule "org.opencms.apollo.template.webform" "/artifacts/org.opencms.apollo.template.webform.zip"
 replaceModule "org.opencms.apollo.template.democontents" "/artifacts/org.opencms.apollo.template.democontents.zip"
 
