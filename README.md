@@ -4,7 +4,7 @@ opencms-docker
 
 These official docker images contain OpenCms with the demo application. This is a basic OpenCms installation that includes mySQL and Tomcat. OpenCms has been installed like that for ages, and it just works. The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
 
-### Latest supported OpenCms version: 10.5.1 ###
+### Latest supported OpenCms version: 10.5.4 ###
 
 Dockerfiles for older OpenCms versions are also provided, see below.
 
@@ -13,11 +13,11 @@ Dockerfiles for older OpenCms versions are also provided, see below.
 To run the lastest pre-build OpenCms docker image directly from docker hub use:
 
 ```Shell
-docker run -d -p 8080:8080 alkacon/opencms-docker:10.5.1
+docker run -d -p 8080:8080 alkacon/opencms-docker:10.5.4
 ```
 
 * You may replace the version number with any supported OpenCms version (see below).
-* When the container is running, point your web browser to `http://localhost:8080/opencms/` to see OpenCms in action. 
+* When the container is running, point your web browser to `http://localhost:8080/opencms/` to see OpenCms in action.
 * Make sure that you change all default OpenCms passwords when you load the image on a public server ;)
 
 The image features several options that can be set when calling `docker run`. Just add the environment variables via the `-e` option. Available options are (with default values):
@@ -39,12 +39,13 @@ docker build -t alkacon/opencms-docker:10.x.x .
 docker run -d -p 8080:8080 alkacon/opencms-docker:10.x.x
 ```
 
-Replace the `10.x.x` version number in all the above shell commands with a docker supported OpenCms version number (see below). 
+Replace the `10.x.x` version number in all the above shell commands with a docker supported OpenCms version number (see below).
 
 ### Supported OpenCms versions ###
 
 The following versions are currently supported with Docker images:
 
+* OpenCms 10.5.4
 * OpenCms 10.5.1
 * OpenCms 10.5.0
 * OpenCms 10.0.1
