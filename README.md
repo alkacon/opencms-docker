@@ -17,7 +17,7 @@ docker run -d -p 8080:8080 alkacon/opencms-docker:10.5.4
 ```
 
 * You may replace the version number with any supported OpenCms version (see below).
-* When the container is running, point your web browser to `http://localhost:8080/opencms/` to see OpenCms in action.
+* When the container is running, point your web browser to `http://localhost:8080/` to see OpenCms in action (up to OpenCms 10.0.x use `http://localhost:8080/opencms/`).
 * Make sure that you change all default OpenCms passwords when you load the image on a public server ;)
 
 The image features several options that can be set when calling `docker run`. Just add the environment variables via the `-e` option. Available options are (with default values):
