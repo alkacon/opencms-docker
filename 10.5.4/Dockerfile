@@ -50,6 +50,8 @@ RUN \
     mkdir -v -p ${OPENCMS_HOME_INSTALL} && \
 # Unzip the .war
     unzip -q -d ${OPENCMS_HOME_INSTALL} /artifacts/opencms.war && \
+# Fix mysql problem with overlay2
+    find /var/lib/mysql/mysql -type f -exec touch {} \; && \
 # Start up mysql and set the password of the root user to "admin"
     service mysql start && \
     mysqladmin -u root --password="" password "admin" && \

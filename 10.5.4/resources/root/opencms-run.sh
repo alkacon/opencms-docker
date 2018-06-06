@@ -3,6 +3,10 @@
 # OpenCms startup script executed when Docker loads the image
 
 echo "Starting mySQL server"
+
+# Fix mysql problem with overlay2
+find /var/lib/mysql/mysql -type f -exec touch {} \;
+
 service mysql start
 
 # Execute pre-init configuration scripts
