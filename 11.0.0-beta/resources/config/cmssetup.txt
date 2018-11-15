@@ -1,0 +1,67 @@
+# Turn echo on
+echo on
+
+# Login the Admin user
+login "Admin" "admin"
+
+# Create the setup project
+createTempfileProject
+
+# Switch to the setup project
+setCurrentProject "_setupProject"
+
+# Initialize the default property definitions
+createPropertyDefinition Title
+createPropertyDefinition Description
+createPropertyDefinition Keywords
+createPropertyDefinition NavText
+createPropertyDefinition NavPos
+createPropertyDefinition export
+createPropertyDefinition exportname
+createPropertyDefinition default-file
+createPropertyDefinition content-encoding
+createPropertyDefinition content-conversion
+createPropertyDefinition cache
+createPropertyDefinition template
+createPropertyDefinition template-elements
+createPropertyDefinition locale
+createPropertyDefinition config.sitemap
+
+# Switch to the root context
+setSiteRoot "/"
+
+# Create folder structure
+createFolder "/" "sites/"
+createFolder "/sites/" "default/"
+createFolder "/system/" "lost-found/"
+createFolder "/system/" "modules/"
+createFolder "/" "shared/"
+
+
+# Apply folder permissions
+chacc "/" "user" "ALL_OTHERS" "+v+r+i"
+chacc "/" "role" "ROOT_ADMIN" "+v+w+r+c+d+i"
+chacc "/system" "role" "WORKPLACE_USER" "+r+i"
+chacc "/system/lost-found" "role" "WORKPLACE_MANAGER" "+v+w+r+c+d+i"
+chacc "/system/modules" "role" "WORKPLACE_USER" "+v+r+i"
+chacc "/system/orgunits" "role" "ACCOUNT_MANAGER" "+v+w+r+c+d+i"
+chacc "/sites/default" "group" "Users" "+v+w+r+i"
+chacc "/shared" "group" "Users" "+v+w+r+i"
+
+# Publish the project
+unlockCurrentProject
+publishProjectAndWait
+
+# Create the default "Offline" project
+createDefaultProject "Offline" "The Offline Project"
+
+# Create required groups
+createGroup "Caritas_Alle" "Caritasgruppe"
+createGroup "Projectmanagers" "Projektmanagergruppe"
+createGroup "ShopUser" "Shop Nutzer Gruppe"
+
+# Import the modules that have been selected in the setup wizard to the default site
+setSiteRoot "/sites/default/"
+importModulesFromSetupBean
+
+exit

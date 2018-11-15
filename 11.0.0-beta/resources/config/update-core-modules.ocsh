@@ -1,0 +1,16 @@
+login Admin admin
+setSiteRoot "/"
+
+# Import the CORE modules
+updateModule "/artifacts/org.opencms.base.zip"
+updateModule "/artifacts/org.opencms.configuration.zip"
+updateModule "/artifacts/org.opencms.editors.zip"
+updateModule "/artifacts/org.opencms.editors.codemirror.zip"
+updateModule "/artifacts/org.opencms.editors.tinymce.zip"
+updateModule "/artifacts/org.opencms.ugc.zip"
+updateModule "/artifacts/org.opencms.jsp.search.zip"
+updateModule "/artifacts/org.opencms.jquery.zip"
+
+exit
+
+

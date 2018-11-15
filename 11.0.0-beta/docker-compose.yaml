@@ -1,0 +1,39 @@
+######################################################################################
+## NOTE: To make the configration work,                                             ##
+##  - pull all used images from the docker-repos                                    ##
+##  - copy (or link) the files below "config-files" into the respective sub-folders ##
+##    under /home/alkacon/volumes/ on the host system.                                ##
+##  - run `docker-compose down` in the folder with this file to remove all running  ##
+##    containers mentioned in that file                                             ##
+##  - run `docker-compose up -d` in the folder with this file to run all containers ##
+######################################################################################
+
+version: '2.2'
+services:
+    mariadb:
+        image: mariadb:latest
+        container_name: mariadb
+        init: true
+        restart: always
+        environment:
+            - "MYSQL_ROOT_PASSWORD=secretDBpassword"
+
+    opencms:
+        image: alkacon/opencms-docker:11.0.0-beta
+        container_name: opencms
+        init: true
+        restart: always
+        depends_on: [ "mariadb" ]
+        links:
+            - "mariadb:mysql"
+        ports:
+            - "80:8080"
+        command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"] # waiting for the mysql container to be ready
+        environment:
+ #           - "GZIP=true"
+ #           - "TOMCAT_OPTS=-Xmx2g -Xms512m -server -XX:+UseConcMarkSweepGC"
+ #           - "ADMIN_PASSWD=admin" # individual Admin password
+            - "DB_PASSWD=secretDBpassword" # individual DB password, same as MYSQL_ROOT_PASSWORD of the mysql/mariadb container
+ #           - "DB_HOST=mysql"
+ #           - "DB_NAME=opencms"
+ #           - "OPENCMS_COMPONENTS=workplace,demo"
