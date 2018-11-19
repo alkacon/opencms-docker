@@ -3,7 +3,7 @@
 OCSERVER="http://127.0.0.1:8080"
 HWADDR=$(cat /sys/class/net/eth0/address)
 
-DB_USER=root
+DB_USER=$DB_USER
 DB_PWD=$DB_PASSWD
 DB_DB=$DB_NAME
 DB_PRODUCT=mysql

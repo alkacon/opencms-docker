@@ -25,6 +25,7 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
 	ADMIN_PASSWD=admin \
 	DB_HOST=mysql \
 	DB_NAME=opencms \
+	DB_USER=root \
 	DB_PASSWD=
 
 RUN \

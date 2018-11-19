@@ -4,7 +4,69 @@ opencms-docker
 
 These official docker images contain OpenCms with the demo application. This is a basic OpenCms installation that includes mySQL and Tomcat. OpenCms has been installed like that for ages, and it just works. The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
 
-### Latest supported OpenCms version: 10.5.4 ###
+## Preview to improved image running OpenCms 11.x ##
+
+For the upcoming version of OpenCms 11 Alkacon Software provides a new style of docker image. Using an external database it will allow easy OpenCms core updates, whenever a new OpenCms version is released.
+
+The image alkacon/opencms-docker:11.0.0-beta provides a preview to this new image style.
+
+### Running the alkacon/opencms-docker:11.0.0-beta imgae ###
+
+The easiest way to run this image is to use docker-compose. See the docker-compose.yaml below.
+
+```
+version: '2.2'
+services:
+    mariadb:
+        image: mariadb:latest
+        container_name: mariadb
+        init: true
+        restart: always
+        volumes:
+            - /my-mysql-data-dir:/var/lib/mysql
+        environment:
+            - "MYSQL_ROOT_PASSWORD=secretDBpassword"
+
+    opencms:
+        image: alkacon/opencms-docker:11.0.0-beta
+        container_name: opencms
+        init: true
+        restart: always
+        depends_on: [ "mariadb" ]
+        links:
+            - "mariadb:mysql"
+        ports:
+            - "80:8080"
+        volumes:
+            - /my-tomcat-webapps-dir:/usr/local/tomcat/webapps
+        command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"] # waiting for the mysql container to be ready
+        environment:
+             - "DB_PASSWD=secretDBpassword" # DB password, same as MYSQL_ROOT_PASSWORD of the mysql/mariadb container
+ #           - "TOMCAT_OPTS=-Xmx2g -Xms512m -server -XX:+UseConcMarkSweepGC"
+ #           - "ADMIN_PASSWD=admin" # individual Admin password
+ #           - "DB_HOST=mysql_hostname"
+ #           - "DB_USER=root"
+ #           - "DB_NAME=opencms_db_name"
+ #           - "OPENCMS_COMPONENTS=workplace,demo"
+```
+Navigate to the folder containing the file 'docker-compose.yaml' and execute `docker-compose up -d`. You can view the log of the OpenCms container with `docker logs -f opencms`.
+
+This will start one mariadb/mysql container, using the data directory '/my-mysql-data-dir' on the host system. The second container is the OpenCms container, using the directory '/my-tomcat-webapps-dir' on the host system as the tomcat webapps directory. Both directories need to be created befor starting the containers. This way, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
+
+### Environment variables ###
+
+* DB_HOST the database host name, default is 'mysql'
+* DB_USER the database user, default is 'root'
+* DB_PASSWD the database password
+* DB_NAME the database name, default is 'opencms'
+* OPENCMS_COMPONENTS the OpenCms components to install, default is 'workplace' to install the demo template also use 'workplace,demo'
+* TOMCAT_OPTS sets the tomcat startup options, default is '-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC'  
+
+### Building the image ###
+
+Navigate to the directory containing the Dockerfile and execute `docker build -t alkacon/opencms-docker:11.0.0-beta .`.
+
+## Latest supported OpenCms version: 10.5.4 ##
 
 Dockerfiles for older OpenCms versions are also provided, see below.
 
