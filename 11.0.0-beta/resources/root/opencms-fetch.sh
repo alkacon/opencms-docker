@@ -1,11 +1,16 @@
 #!/bin/bash
 
+
+
 # Check if a file opencms.war is not available, if so download from the web 
 if [ ! -s ${ARTIFACTS_FOLDER}opencms.war ] 
 then
 
 	if [ ! -s ${ARTIFACTS_FOLDER}opencms.zip ]
 	then
+		if [ ! -d ${ARTIFACTS_FOLDER} ]; then
+			mkdir -v -p ${ARTIFACTS_FOLDER}
+		fi
 		echo "Downloading OpenCms from '$OPENCMS_URL'"
 		wget -nv $OPENCMS_URL -O ${ARTIFACTS_FOLDER}opencms.zip
 		echo "Download complete, unpacking war"
