@@ -2,11 +2,16 @@ opencms-docker
 ==============
 ## Official docker support for OpenCms ##
 
-These official docker images contain OpenCms with the demo application. This is a basic OpenCms installation that includes mySQL and Tomcat. OpenCms has been installed like that for ages, and it just works. The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
+These official docker images contain OpenCms with the demo application.
+This is a basic OpenCms installation that includes mySQL and Tomcat.
+OpenCms has been installed like that for ages, and it just works.
+The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
+
+From OpenCms 11 onwards an improved version of images will be provided, separating database and OpenCms installation and allowing for updates. See below for details.
 
 ## Preview to improved image running OpenCms 11.x ##
 
-For the upcoming version of OpenCms 11 Alkacon Software provides a new style of docker image. Using an external database it will allow easy OpenCms core updates, whenever a new OpenCms version is released.
+For the upcoming version of OpenCms 11 Alkacon Software provides a new style of docker image. Using an external (mysql/mariadb) database it will allow easy OpenCms core updates, whenever a new OpenCms version is released.
 
 The image alkacon/opencms-docker:11.0.0-beta provides a preview to this new image style.
 
@@ -49,9 +54,11 @@ services:
  #           - "DB_NAME=opencms_db_name"
  #           - "OPENCMS_COMPONENTS=workplace,demo"
 ```
+You can save this file as 'docker-compose.yaml' and adjust the directories '/my-mysql-data-dir' and '/my-tomcat-webapps-dir' to suitable folders on your host system.
 Navigate to the folder containing the file 'docker-compose.yaml' and execute `docker-compose up -d`. You can view the log of the OpenCms container with `docker logs -f opencms`.
 
-This will start one mariadb/mysql container, using the data directory '/my-mysql-data-dir' on the host system. The second container is the OpenCms container, using the directory '/my-tomcat-webapps-dir' on the host system as the tomcat webapps directory. Both directories need to be created befor starting the containers. This way, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
+This will start one mariadb/mysql container, using the data directory '/my-mysql-data-dir' on the host system. The second container is the OpenCms container, using the directory '/my-tomcat-webapps-dir' on the host system as the tomcat webapps directory. Both directories should to be created before starting the running the containers.
+Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data. What in turn means that you should delete the content of this folders for a fresh installation.
 
 ### Environment variables ###
 
@@ -59,8 +66,8 @@ This will start one mariadb/mysql container, using the data directory '/my-mysql
 * DB_USER the database user, default is 'root'
 * DB_PASSWD the database password
 * DB_NAME the database name, default is 'opencms'
-* OPENCMS_COMPONENTS the OpenCms components to install, default is 'workplace' to install the demo template also use 'workplace,demo'
-* TOMCAT_OPTS sets the tomcat startup options, default is '-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC'  
+* OPENCMS_COMPONENTS the OpenCms components to install, default is 'workplace,demo' to not install the demo template use 'workplace'
+* TOMCAT_OPTS sets the tomcat startup options, default is '-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC'
 
 ### Building the image ###
 
