@@ -16,13 +16,14 @@ services:
         init: true
         restart: always
         volumes:
-            - /home/user/dockermount/opencms-docker-mysql:/var/lib/mysql
+            - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
         image: alkacon/opencms-docker:11.0.0-beta
         container_name: opencms
+        build: .
         init: true
         restart: always
         depends_on: [ "mariadb" ]
@@ -31,7 +32,7 @@ services:
         ports:
             - "80:8080"
         volumes:
-            - /home/user/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
+            - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"] # waiting for the mysql container to be ready
         environment:
             - "DB_PASSWD=secretDBpassword" # DB password, same as MYSQL_ROOT_PASSWORD of the mysql/mariadb container
