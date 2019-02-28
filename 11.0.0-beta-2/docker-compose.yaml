@@ -21,7 +21,7 @@ services:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
-        image: alkacon/opencms-docker:11.0.0-beta
+        image: alkacon/opencms-docker:11.0.0-beta-2
         container_name: opencms
         build: .
         init: true
@@ -42,3 +42,4 @@ services:
  #           - "DB_HOST=mysql"
  #           - "DB_NAME=opencms"
  #           - "OPENCMS_COMPONENTS=workplace,demo"
+ #           - "WEBRESOURCES_CACHE_SIZE=200000"

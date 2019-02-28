@@ -29,7 +29,7 @@ echo "."
 echo "Starting Tomcat again..."
 echo "."
 
-${TOMCAT_HOME}/bin/catalina.sh run &> /dev/null &
+${TOMCAT_HOME}/bin/catalina.sh run &> ${TOMCAT_HOME}/logs/catalina.out &
 echo "."
 sleep 1
 ps -ef | grep tomcat | grep java

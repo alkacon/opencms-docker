@@ -6,9 +6,9 @@ MAINTAINER Alkacon Software GmbH
 # It downloads the OpenCms distro and installs it with all the standard demo modules.
 #
 # Use the following command to run:
-#  
+#
 # docker run -d -p 80:8080 -p 22000:22 alkacon/opencms-docker:9.5.3-simple
-# 
+#
 
 # Variables used in the shell scripts loaded from the file system
 ENV TOMCAT_HOME=/usr/local/tomcat
@@ -17,7 +17,7 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     OPENCMS_HOME=${TOMCAT_HOME}/webapps/ROOT \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.0_beta.zip \
+    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.0_beta_2.zip \
     OPENCMS_COMPONENTS=workplace,demo \
     TIME_ZONE=Europe/Berlin \
     TOMCAT_OPTS="-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC" \
@@ -26,7 +26,8 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
 	DB_HOST=mysql \
 	DB_NAME=opencms \
 	DB_USER=root \
-	DB_PASSWD=
+	DB_PASSWD=\
+	WEBRESOURCES_CACHE_SIZE=200000
 
 RUN \
 	echo "Update the apt packet repos" && \
@@ -45,7 +46,7 @@ RUN \
     chmod +x /root/*.sh && \
     bash /root/opencms-fetch.sh && \
     rm -rf ${WEBAPPS_HOME}/*
-    
+
 # Expose port 8080 for Tomcat and define the startup script
 EXPOSE 8080
 

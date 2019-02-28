@@ -19,6 +19,10 @@ fi
 echo "Making session cookie name unique and disabling web sockets ..."
 sed -i "s/<Context>/<Context sessionCookieName=\"JSESSIONID_$HOSTNAME\" containerSciFilter=\"WsSci\">/" ${TOMCAT_HOME}/conf/context.xml
 
+# Increasing Tomcat webresources cache size
+echo "Setting webresources cache size to override defaults"
+sed -i "s/<\/Context>/<Resources cachingAllowed=\"true\" cacheMaxSize=\"${WEBRESOURCES_CACHE_SIZE}\" \/><\/Context>/" ${TOMCAT_HOME}/conf/context.xml
+
 # Disabling session persistence
 # Disable JAR scanning for servlets and restrict TLD scanning to the JSTL JAR to speed up Tomcat start
 echo "Disabling session persistence and adding JAR scanner filter ..."

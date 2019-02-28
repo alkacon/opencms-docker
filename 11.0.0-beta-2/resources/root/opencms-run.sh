@@ -19,7 +19,7 @@ chmod -v +x /root/postinit/*.sh
 bash /root/process-script-dir.sh /root/preinit runonce
 
 echo "Starting OpenCms / Tomcat in background"
-${TOMCAT_HOME}/bin/catalina.sh run &> /dev/null &
+${TOMCAT_HOME}/bin/catalina.sh run &> ${TOMCAT_HOME}/logs/catalina.out &
 
 # Write startup time to file
 date > ${OPENCMS_HOME}/WEB-INF/opencms-starttime
