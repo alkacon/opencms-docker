@@ -11,7 +11,7 @@ else
 fi
 
 if [ "${DEBUG}" == "true" ]; then
-	TOMCAT_OPTS="${TOMCAT_OPTS}  -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 -Djava.compiler=NONE"
+	TOMCAT_OPTS="${TOMCAT_OPTS}  -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -Djava.compiler=NONE"
 fi
 
 # By default Tomcat will overwrite session cookies from multiple webapps on the same IP even different ports are used

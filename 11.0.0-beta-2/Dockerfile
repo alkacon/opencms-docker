@@ -27,7 +27,8 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
 	DB_NAME=opencms \
 	DB_USER=root \
 	DB_PASSWD=\
-	WEBRESOURCES_CACHE_SIZE=200000
+	WEBRESOURCES_CACHE_SIZE=200000\
+	DEBUG=false
 
 RUN \
 	echo "Update the apt packet repos" && \

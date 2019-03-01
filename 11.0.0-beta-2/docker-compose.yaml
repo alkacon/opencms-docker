@@ -43,3 +43,4 @@ services:
  #           - "DB_NAME=opencms"
  #           - "OPENCMS_COMPONENTS=workplace,demo"
  #           - "WEBRESOURCES_CACHE_SIZE=200000"
+ #           - "DEBUG=false" # Enable debugging

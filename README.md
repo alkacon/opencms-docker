@@ -54,6 +54,7 @@ services:
  #           - "DB_NAME=opencms_db_name"
  #           - "OPENCMS_COMPONENTS=workplace,demo"
  #           - "WEBRESOURCES_CACHE_SIZE=200000"
+ #           - "DEBUG=false"
 ```
 You can save this file as 'docker-compose.yaml' and adjust the directories '/my-mysql-data-dir' and '/my-tomcat-webapps-dir' to suitable folders on your host system.
 Navigate to the folder containing the file 'docker-compose.yaml' and execute `docker-compose up -d`. You can view the log of the OpenCms container with `docker logs -f opencms`.
@@ -70,6 +71,7 @@ Using these directories, it is possible to stop and remove the created container
 * OPENCMS_COMPONENTS the OpenCms components to install, default is 'workplace,demo' to not install the demo template use 'workplace'
 * TOMCAT_OPTS sets the tomcat startup options, default is '-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC'
 * WEBRESOURCES_CACHE_SIZE sets the size of tomcat's webresources cache, default is 200000 (200MB)
+* DEBUG flag, indicating if debug connections via {docker ip address}:8000 are allowed.
 
 ### Building the image ###
 
