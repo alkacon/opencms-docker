@@ -23,7 +23,7 @@ then
 	mv ${ARTIFACTS_FOLDER}TEMP/WEB-INF/packages/modules/* ${ARTIFACTS_FOLDER}
 
 	mv ${ARTIFACTS_FOLDER}TEMP/WEB-INF/lib/* ${ARTIFACTS_FOLDER}libs
-	echo "Renaming modules to remove verison number"
+	echo "Renaming modules to remove version number"
 	for file in ${ARTIFACTS_FOLDER}*.zip
 	do
    		mv $file ${file%-*}".zip"
