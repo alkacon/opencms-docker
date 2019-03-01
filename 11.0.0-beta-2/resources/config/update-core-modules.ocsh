@@ -2,8 +2,8 @@ login Admin admin
 setSiteRoot "/"
 
 # Import the CORE modules
-updateModule "/artifacts/org.opencms.base.zip"
-updateModule "/artifacts/org.opencms.configuration.zip"
+replaceModule "/artifacts/org.opencms.base.zip"
+replaceModule "/artifacts/org.opencms.configuration.zip"
 
 exit
 
