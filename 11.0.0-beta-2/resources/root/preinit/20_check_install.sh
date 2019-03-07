@@ -34,6 +34,18 @@ then
 		mkdir -v -p ${OPENCMS_HOME}/WEB-INF/config/backups
 	fi
 	cp -f -v ${OPENCMS_HOME}/WEB-INF/config/opencms-modules.xml ${OPENCMS_HOME}/WEB-INF/config/backups/opencms-modules-preinst.xml
+	
+	echo "Updating config files with the version from the OpenCms WAR"
+	unzip -q -d ${OPENCMS_HOME} ${ARTIFACTS_FOLDER}opencms.war WEB-INF/packages/modules/*.zip WEB-INF/lib/*.jar
+	for FILENAME in ${FILES[@]}
+	do
+		if [ -f "${OPENCMS_HOME}${FILENAME}" ]
+		then
+			rm -rf "${OPENCMS_HOME}${FILENAME}"
+		fi
+		echo "Moving file from \"${OPENCMS_HOME_INSTALL}${FILENAME}\" to \"${OPENCMS_HOME}${FILENAME}\" ..."
+		mv "${OPENCMS_HOME_INSTALL}${FILENAME}" "${OPENCMS_HOME}${FILENAME}"
+	done
 
 	echo "Updating OpenCms core JARs"
 	if [ -f ${OPENCMS_HOME}/WEB-INF/lib/core-libs.properties ]; then

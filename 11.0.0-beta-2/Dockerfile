@@ -19,6 +19,7 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     CONFIG_FILE=/config/setup.properties \
     OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.0_beta_2.zip \
     OPENCMS_COMPONENTS=workplace,demo \
+    UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml"\
     TIME_ZONE=Europe/Berlin \
     TOMCAT_OPTS="-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC" \
     GZIP=true \
