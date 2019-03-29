@@ -15,7 +15,7 @@ For the upcoming version of OpenCms 11 Alkacon Software provides a new style of 
 
 The image alkacon/opencms-docker:11.0.0-beta-2 provides a preview to this new image style.
 
-### Running the alkacon/opencms-docker:11.0.0-beta-2 image ###
+### Running the alkacon/opencms-docker:11.0.0-rc image ###
 
 The easiest way to run this image is to use docker-compose. See the docker-compose.yaml below.
 
