@@ -21,9 +21,9 @@ services:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
-        image: alkacon/opencms-docker:11.0.0-rc
+        image: alkacon/opencms-docker:11.0.0
         container_name: opencms
-        build: .
+        build: ./image
         init: true
         restart: always
         depends_on: [ "mariadb" ]

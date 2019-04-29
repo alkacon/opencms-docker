@@ -1,19 +1,12 @@
 opencms-docker
 ==============
-## Official docker support for OpenCms ##
+## Official OpenCms docker image ##
 
-These official docker images contain OpenCms with the demo application.
-This is a basic OpenCms installation that includes mySQL and Tomcat.
-OpenCms has been installed like that for ages, and it just works.
-The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
+The official docker image contains OpenCms with the demo application.
+This is a basic OpenCms installation with Tomcat that can connect to a MySql/mariaDB database (e.g., running in another container).
 
-## April 30th 2019: The image for OpenCms 11.0.0 will be available later today
-
-## Running OpenCms 11.x ##
-
-For the upcoming version of OpenCms 11 Alkacon Software provides a new style of docker image. Using an external (mysql/mariadb) database it will allow easy OpenCms core updates, whenever a new OpenCms version is released.
-
-The image alkacon/opencms-docker:11.0.0-beta-2 provides a preview to this new image style.
+The image is well suited for evaluation and test purposes of the latest OpenCms release.
+We provide a docker-compose file to get OpenCms and the database running with just one command.
 
 ### Running the alkacon/opencms-docker:11.0.0 image ###
 
@@ -59,8 +52,11 @@ services:
 You can save this file as 'docker-compose.yaml' and adjust the directories '/my-mysql-data-dir' and '/my-tomcat-webapps-dir' to suitable folders on your host system.
 Navigate to the folder containing the file 'docker-compose.yaml' and execute `docker-compose up -d`. You can view the log of the OpenCms container with `docker logs -f opencms`.
 
-This will start one mariadb/mysql container, using the data directory '/my-mysql-data-dir' on the host system. The second container is the OpenCms container, using the directory '/my-tomcat-webapps-dir' on the host system as the tomcat webapps directory. Both directories should to be created before starting the running the containers.
-Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data. What in turn means that you should delete the content of this folders for a fresh installation.
+This will start one mariadb/mysql container, using the data directory '/my-mysql-data-dir' on the host system. The second container is the OpenCms container, using the directory '/my-tomcat-webapps-dir' on the host system as the tomcat webapps directory.
+Both directories should to be created before starting the running the containers.
+
+Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
+What in turn means that *you should delete the content of this folders for a fresh installation*.
 
 ### Environment variables ###
 
@@ -75,57 +71,13 @@ Using these directories, it is possible to stop and remove the created container
 
 ### Building the image ###
 
-Navigate to the directory containing the Dockerfile and execute `docker build -t alkacon/opencms-docker:11.0.0 .`.
+Since the image is available on Docker Hub, you do not need to build it yourself. If you want to build it anyway, here's how to do it:
 
-## Latest supported OpenCms version: 10.5.4 ##
+  a) via docker-compose: Go to the repository's main folder and typ `docker-compose build opencms`.
+  b) via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:11.0.0 .`.
 
-Dockerfiles for older OpenCms versions are also provided, see below.
+## Support for older OpenCms versions ##
 
-### Running the image ###
+Images for older OpenCms versions are also provided.
 
-To run the lastest pre-build OpenCms docker image directly from docker hub use:
-
-```Shell
-docker run -d -p 8080:8080 alkacon/opencms-docker:10.5.4
-```
-
-* You may replace the version number with any supported OpenCms version (see below).
-* When the container is running, point your web browser to `http://localhost:8080/` to see OpenCms in action (up to OpenCms 10.0.x use `http://localhost:8080/opencms/`).
-* Make sure that you change all default OpenCms passwords when you load the image on a public server ;)
-
-The image features several options that can be set when calling `docker run`. Just add the environment variables via the `-e` option. Available options are (with default values):
-
- * `-e "OCCO_SERVER_NAME=http://localhost:8080"`
- * `-e "OCCO_ADMIN_PASSWD=admin"`
- * `-e "OCCO_USEPROXY=false"` (if set to `true` the "opencms" prefix is cut for internal links)
- * `-e "OCCO_ENABLE_JLAN=false"` (if set to `true` the network share is enabled, use option `-p 1445:1445` to make it available at your host)
- * `-e "OCCO_DEBUG=false"` (if set to `true` Tomcat starts in debug mode, use option `-p 8000:8000` to make the debug port available at your host)
-
-
-### Building the image ###
-
-When you have checked out the `alkacon/opencms-docker` repository from GitHub, you can build and run OpenCms with the following commands:
-
-```Shell
-cd ~/opencms-docker/10.x.x
-docker build -t alkacon/opencms-docker:10.x.x .
-docker run -d -p 8080:8080 alkacon/opencms-docker:10.x.x
-```
-
-Replace the `10.x.x` version number in all the above shell commands with a docker supported OpenCms version number (see below).
-
-### Supported OpenCms versions ###
-
-The following versions are currently supported with Docker images:
-
-* OpenCms 10.5.4
-* OpenCms 10.5.1
-* OpenCms 10.5.0
-* OpenCms 10.0.1
-* OpenCms 10.0.0
-* OpenCms 9.5.3
-* OpenCms 9.5.2
-* OpenCms 9.5.1
-* OpenCms 9.5.0
-* OpenCms 9.0.1
-
+For details see [https://github.com/alkacon/opencms-docker/blob/master/README.md](https://github.com/alkacon/opencms-docker/blob/master/README.md)
