@@ -1,6 +1,12 @@
 opencms-docker
 ==============
-## Official docker support for OpenCms ##
+
+## Latest images ##
+**See [the main branch](https://github.com/alkacon/opencms-docker) for images of OpenCms 11 onwards.**
+
+This branch is only about images up to OpenCms 10.5.4.
+
+## Images up to OpenCms 10.5.4 ##
 
 These official docker images contain OpenCms with the demo application. This is a basic OpenCms installation that includes mySQL and Tomcat. OpenCms has been installed like that for ages, and it just works. The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
 
