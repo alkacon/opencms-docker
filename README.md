@@ -73,8 +73,8 @@ What in turn means that *you should delete the content of this folders for a fre
 
 Since the image is available on Docker Hub, you do not need to build it yourself. If you want to build it anyway, here's how to do it:
 
-  a) via docker-compose: Go to the repository's main folder and typ `docker-compose build opencms`.
-  b) via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:11.0.0 .`.
+  * via docker-compose: Go to the repository's main folder and typ `docker-compose build opencms`.
+  * via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:11.0.0 .`.
 
 ## Support for older OpenCms versions ##
 
