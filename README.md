@@ -7,15 +7,15 @@ This is a basic OpenCms installation that includes mySQL and Tomcat.
 OpenCms has been installed like that for ages, and it just works.
 The images are well suited for quick evaluation and test purposes of the latest OpenCms release.
 
-From OpenCms 11 onwards an improved version of images will be provided, separating database and OpenCms installation and allowing for updates. See below for details.
+## April 30th 2019: The image for OpenCms 11.0.0 will be available later today
 
-## Preview to improved image running OpenCms 11.x ##
+## Running OpenCms 11.x ##
 
 For the upcoming version of OpenCms 11 Alkacon Software provides a new style of docker image. Using an external (mysql/mariadb) database it will allow easy OpenCms core updates, whenever a new OpenCms version is released.
 
 The image alkacon/opencms-docker:11.0.0-beta-2 provides a preview to this new image style.
 
-### Running the alkacon/opencms-docker:11.0.0-rc image ###
+### Running the alkacon/opencms-docker:11.0.0 image ###
 
 The easiest way to run this image is to use docker-compose. See the docker-compose.yaml below.
 
@@ -33,7 +33,7 @@ services:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
-        image: alkacon/opencms-docker:11.0.0-beta-2
+        image: alkacon/opencms-docker:11.0.0
         container_name: opencms
         init: true
         restart: always
@@ -75,7 +75,7 @@ Using these directories, it is possible to stop and remove the created container
 
 ### Building the image ###
 
-Navigate to the directory containing the Dockerfile and execute `docker build -t alkacon/opencms-docker:11.0.0-beta-2 .`.
+Navigate to the directory containing the Dockerfile and execute `docker build -t alkacon/opencms-docker:11.0.0 .`.
 
 ## Latest supported OpenCms version: 10.5.4 ##
 
