@@ -56,7 +56,7 @@ This will start one mariadb/mysql container, using the data directory '/my-mysql
 Both directories should to be created before starting the running the containers.
 
 Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
-What in turn means that *you should delete the content of this folders for a fresh installation*.
+*You should delete the content of these folders for a fresh installation*.
 
 ### Environment variables ###
 
