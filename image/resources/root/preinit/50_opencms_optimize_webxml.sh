@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_WEBXML="${OPENCMS_HOME_INSTALL}/WEB-INF/web.xml"
+CONFIG_WEBXML="${OPENCMS_HOME}/WEB-INF/web.xml"
 CONFIG_TMPFILE="/tmp/webxml.txt"
 
 # Optimize web.xml configuration

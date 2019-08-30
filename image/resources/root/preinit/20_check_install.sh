@@ -19,7 +19,7 @@ then
 	fi
 
 	echo "Extract modules and libs"
-	unzip -q -d ${ARTIFACTS_FOLDER}TEMP ${ARTIFACTS_FOLDER}opencms.war WEB-INF/packages/modules/*.zip WEB-INF/lib/*.jar
+	unzip -q -d ${ARTIFACTS_FOLDER}TEMP ${ARTIFACTS_FOLDER}opencms.war
 	mv ${ARTIFACTS_FOLDER}TEMP/WEB-INF/packages/modules/* ${ARTIFACTS_FOLDER}
 
 	mv ${ARTIFACTS_FOLDER}TEMP/WEB-INF/lib/* ${ARTIFACTS_FOLDER}libs
@@ -37,14 +37,15 @@ then
 	
 	echo "Updating config files with the version from the OpenCms WAR"
 	unzip -q -d ${OPENCMS_HOME} ${ARTIFACTS_FOLDER}opencms.war WEB-INF/packages/modules/*.zip WEB-INF/lib/*.jar
+	IFS=',' read -r -a FILES <<< "$UPDATE_CONFIG_FILES"
 	for FILENAME in ${FILES[@]}
 	do
 		if [ -f "${OPENCMS_HOME}${FILENAME}" ]
 		then
 			rm -rf "${OPENCMS_HOME}${FILENAME}"
 		fi
-		echo "Moving file from \"${OPENCMS_HOME_INSTALL}${FILENAME}\" to \"${OPENCMS_HOME}${FILENAME}\" ..."
-		mv "${OPENCMS_HOME_INSTALL}${FILENAME}" "${OPENCMS_HOME}${FILENAME}"
+		echo "Moving file from \"${ARTIFACTS_FOLDER}TEMP/${FILENAME}\" to \"${OPENCMS_HOME}${FILENAME}\" ..."
+		mv "${ARTIFACTS_FOLDER}TEMP/${FILENAME}" "${OPENCMS_HOME}${FILENAME}"
 	done
 
 	echo "Updating OpenCms core JARs"
