@@ -4,12 +4,12 @@ CONFIG_WEBXML="${OPENCMS_HOME}/WEB-INF/web.xml"
 CONFIG_TMPFILE="/tmp/webxml.txt"
 
 # Optimize web.xml configuration
-
+if ! grep -q "ExpiresFilter" "$CONFIG_WEBXML" ; then
 read -r -d '' REPLACE_WEBXML << EOM
 
     <!--
     =====================================================================
-    Add "max-age" header for all exported resources 
+    Add "max-age" header for all exported resources
     =====================================================================
     -->
 
@@ -38,12 +38,15 @@ read -r -d '' REPLACE_WEBXML << EOM
 
 EOM
 
-echo "${REPLACE_WEBXML}" > "${CONFIG_TMPFILE}" 
+echo "${REPLACE_WEBXML}" > "${CONFIG_TMPFILE}"
 
 sed -i "/<display-name>OpenCms<\/display-name>/ r ${CONFIG_TMPFILE}" "${CONFIG_WEBXML}"
 
 echo ""
-echo "Modified web.xml configuration looks like this:" 
+echo "Modified web.xml configuration looks like this:"
 echo "================================================================================================="
 cat "${CONFIG_WEBXML}"
 echo ""
+else
+echo "web.xml is already modified. Skipping repeated optimization."
+fi
