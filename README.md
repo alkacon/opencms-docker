@@ -13,7 +13,7 @@ We provide a docker-compose file to get OpenCms and the database running with ju
 The easiest way to run this image is to use docker-compose. See the docker-compose.yaml below.
 
 ```
-version: '2.2'
+version: '3.7'
 services:
     mariadb:
         image: mariadb:latest
