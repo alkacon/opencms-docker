@@ -8,7 +8,7 @@
 ##  - run `docker-compose up -d` in the folder with this file to run all containers ##
 ######################################################################################
 
-version: '2.2'
+version: '3.7'
 services:
     mariadb:
         image: mariadb:latest
