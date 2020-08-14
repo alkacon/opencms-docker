@@ -7,7 +7,7 @@ MAINTAINER Alkacon Software GmbH
 #
 # Use the following command to run:
 #
-# docker run -d -p 80:8080 -p 22000:22 alkacon/opencms-docker:11.0.1
+# docker run -d -p 80:8080 alkacon/opencms-docker:11.0.2
 #
 
 # Variables used in the shell scripts loaded from the file system
@@ -17,7 +17,7 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     OPENCMS_HOME=${TOMCAT_HOME}/webapps/ROOT \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.1.zip \
+    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.2.zip \
     OPENCMS_COMPONENTS=workplace,demo \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml"\
     TIME_ZONE=Europe/Berlin \
