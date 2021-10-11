@@ -56,7 +56,7 @@ This will start one mariadb/mysql container, using the data directory '/my-mysql
 Both directories should to be created before starting the running the containers.
 
 Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
-What in turn means that *you should delete the content of this folders for a fresh installation*.
+*You should delete the content of these folders for a fresh installation*.
 
 When the containers are set up, you can access opencms via `http://localhost`.
 
@@ -82,4 +82,4 @@ Since the image is available on Docker Hub, you do not need to build it yourself
 
 Images for older OpenCms versions are also provided.
 
-For details see [https://github.com/alkacon/opencms-docker/blob/master/README.md](https://github.com/alkacon/opencms-docker/blob/master/README.md)
+For details see [https://github.com/alkacon/opencms-docker/blob/pre_11_images/README.md](https://github.com/alkacon/opencms-docker/blob/pre_11_images/README.md)
