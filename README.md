@@ -8,7 +8,7 @@ This is a basic OpenCms installation with Tomcat that can connect to a MySql/mar
 The image is well suited for evaluation and test purposes of the latest OpenCms release.
 We provide a docker-compose file to get OpenCms and the database running with just one command.
 
-### Running the alkacon/opencms-docker:11.0.2 image ###
+### Running the alkacon/opencms-docker:12.0 image ###
 
 The easiest way to run this image is to use docker-compose. See the docker-compose.yaml below.
 
@@ -26,7 +26,7 @@ services:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
-        image: alkacon/opencms-docker:11.0.2
+        image: alkacon/opencms-docker:12.0
         container_name: opencms
         init: true
         restart: always
@@ -58,6 +58,8 @@ Both directories should to be created before starting the running the containers
 Using these directories, it is possible to stop and remove the created containers and create new containers with an updated image keeping the OpenCms data.
 What in turn means that *you should delete the content of this folders for a fresh installation*.
 
+When the containers are set up, you can access opencms via `http://localhost`.
+
 ### Environment variables ###
 
 * DB_HOST the database host name, default is 'mysql'
@@ -74,7 +76,7 @@ What in turn means that *you should delete the content of this folders for a fre
 Since the image is available on Docker Hub, you do not need to build it yourself. If you want to build it anyway, here's how to do it:
 
   * via docker-compose: Go to the repository's main folder and typ `docker-compose build opencms`.
-  * via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:11.0.2 .`.
+  * via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:12.0 .`.
 
 ## Support for older OpenCms versions ##
 

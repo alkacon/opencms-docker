@@ -1,11 +1,13 @@
 ######################################################################################
-## NOTE: To make the configration work,                                             ##
-##  - pull all used images from the docker-repos                                    ##
-##  - copy (or link) the files below "config-files" into the respective sub-folders ##
-##    under /home/alkacon/volumes/ on the host system.                                ##
+## NOTE: To use the configration for running/removing OpenCms,                      ##
+##  - adjust the "volume" entries to fit for your system                            ##
+##  - run `docker-compose up -d` in the folder with this file to run all containers ##
 ##  - run `docker-compose down` in the folder with this file to remove all running  ##
 ##    containers mentioned in that file                                             ##
-##  - run `docker-compose up -d` in the folder with this file to run all containers ##
+##  - If you already had installed a version of OpenCms via this setup, using the   ##
+##    same volumes: For a fresh installation, remove the volumes from your system   ##
+##    before running `docker-compose up -d`, otherwise the system will only update  ##
+##    and also not install the demo modules.                                        ##
 ######################################################################################
 
 version: '3.7'
@@ -21,7 +23,7 @@ services:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
 
     opencms:
-        image: alkacon/opencms-docker:11.0.2
+        image: alkacon/opencms-docker:12.0
         container_name: opencms
         build: ./image
         init: true

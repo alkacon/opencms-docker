@@ -1,13 +1,12 @@
 FROM tomcat:9.0-jdk11
-MAINTAINER Alkacon Software GmbH
+LABEL org.opencontainers.image.authors="Alkacon Software GmbH"
 
 #
 # This Dockerfile installs a simple OpenCms demo system.
 # It downloads the OpenCms distro and installs it with all the standard demo modules.
 #
-# Use the following command to run:
-#
-# docker run -d -p 80:8080 alkacon/opencms-docker:11.0.2
+# You should run it in combination with a mysql container, as specified in the docker-compose.yaml
+# coming with this repository.
 #
 
 # Variables used in the shell scripts loaded from the file system
@@ -17,7 +16,7 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     OPENCMS_HOME=${TOMCAT_HOME}/webapps/ROOT \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-11.0.2.zip \
+    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-12.0.zip \
     OPENCMS_COMPONENTS=workplace,demo \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml"\
     TIME_ZONE=Europe/Berlin \
