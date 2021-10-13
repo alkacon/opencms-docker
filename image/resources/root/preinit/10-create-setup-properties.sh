@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OCSERVER="http://127.0.0.1:8080"
+OCSERVER=${SERVER_URL:-http://localhost}
 HWADDR=$(cat /sys/class/net/eth0/address)
 
 DB_USER=$DB_USER

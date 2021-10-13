@@ -69,7 +69,9 @@ When the containers are set up, you can access opencms via `http://localhost`.
 * OPENCMS_COMPONENTS the OpenCms components to install, default is 'workplace,demo' to not install the demo template use 'workplace'
 * TOMCAT_OPTS sets the tomcat startup options, default is '-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC'
 * WEBRESOURCES_CACHE_SIZE sets the size of tomcat's webresources cache, default is 200000 (200MB)
-* DEBUG flag, indicating if debug connections via {docker ip address}:8000 are allowed.
+* DEBUG flag indicating if debug connections via {docker ip address}:8000 are allowed
+* JSONAPI flag indicating whether to enable or disable the JSON API, default is 'false'
+* SERVER_URL the server URL, default is 'http://localhost'
 
 ### Building the image ###
 
