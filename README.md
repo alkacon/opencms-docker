@@ -64,10 +64,10 @@ Change the MariaDB root password `secretDBpassword`.
 
 Adjust the following directories for your host system:
 
-* `~/dockermount/opencms-docker-mysql` persists all MariaDB data
-* `~/dockermount/opencms-docker-webapps` persists the Tomcat webapps directory that contains important configurations, caches and indices of OpenCms
+* `~/dockermount/opencms-docker-mysql` the directory where all MariaDB data are persisted
+* `~/dockermount/opencms-docker-webapps` the Tomcat webapps directory that contains important configurations, caches and indices of OpenCms
 
-Configured in this way, it is possible to upgrade the `opencms` and `mariadb` containers while keeping all OpenCms and MariaDB data. See the upgrade guide below.
+Configured in this way, it is possible to upgrade the `opencms` and `mariadb` containers while keeping all your OpenCms and MariaDB data. See the upgrade guide below.
 
 On the other hand, if you like to start with a completely fresh OpenCms installation, do not forget to delete both mounted directories before.
 
@@ -116,13 +116,15 @@ Make sure that you have persisted your OpenCms data and MariaDB data with a Dock
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
 
-During startup, the Docker setup will update all several modules as well as JAR files and configurations in the `{CATALINA_HOME}/webapps` directory.
+During startup, the Docker setup will update several modules as well as JAR files and configurations in the `{CATALINA_HOME}/webapps` directory.
 
 You can follow the installation process with `docker-compose logs -f opencms`.
 
 ## Building the image
 
 Since the image is available on Docker Hub, you do not need to build it yourself. If you want to build it anyway, here's how to do it:
+
+Download the [opencms-docker](https://github.com/alkacon/opencms-docker) repository.
 
 Go to the repository's main folder and type `docker-compose build opencms`.
 
