@@ -1,10 +1,10 @@
-# Official OpenCms Docker Image
-
 <p>
   <a href="http://opencms.org/" alt="OpenCms">
     <img src="https://www.alkacon.com/export/shared/web/logos/opencms-logo.svg" alt="OpenCms logo" width="340" height="84">
   </a>
 </p>
+
+# Official OpenCms Docker Image
 
 Welcome to the official OpenCms Docker image maintained by [Alkacon](https://github.com/alkacon/).
 
@@ -38,7 +38,7 @@ services:
         init: true
         restart: always
         volumes:
-            - /my-mysql-data-dir:/var/lib/mysql
+            - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
@@ -52,7 +52,7 @@ services:
         ports:
             - "80:8080"
         volumes:
-            - /my-tomcat-webapps-dir:/usr/local/tomcat/webapps
+            - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:
              - "DB_PASSWD=secretDBpassword"
@@ -64,8 +64,8 @@ Change the MariaDB root password `secretDBpassword`.
 
 Adjust the following directories for your host system:
 
-* `/my-mysql-data-dir` persists all MariaDB data
-* `/my-tomcat-webapps-dir` persists the Tomcat webapps directory that contains important configurations, caches and indices of OpenCms
+* `~/dockermount/opencms-docker-mysql` persists all MariaDB data
+* `~/dockermount/opencms-docker-webapps` persists the Tomcat webapps directory that contains important configurations, caches and indices of OpenCms
 
 Configured in this way, it is possible to upgrade the `opencms` and `mariadb` containers while keeping all OpenCms and MariaDB data. See the upgrade guide below.
 
@@ -93,10 +93,11 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 * `DB_USER`, the database user, default is `root`
 * `DB_PASSWD`, the database password, is not set by default
 * `DB_NAME`, the database name, default is `opencms`
-* `OPENCMS_COMPONENTS`, the OpenCms components to install, default is `workplace,demo` to not install the demo template use `workplace`
+* `ADMIN_PASSWD`, the admin password, defaults to `admin`
+* `OPENCMS_COMPONENTS`, the OpenCms components to install, default is `workplace,demo`; to not install the demo template use `workplace`
 * `TOMCAT_OPTS`, the Tomcat startup options, default is `-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC`
-* `WEBRESOURCES_CACHE_SIZE`, the size of tomcat's webresources cache, default is `200000` (200MB)
-* `DEBUG`, flag indicating whether debug connections via {docker ip address}:8000 are allowed, defaults to `false`
+* `WEBRESOURCES_CACHE_SIZE`, the size of tomcat's resources cache, default is `200000` (200MB)
+* `DEBUG`, flag indicating whether to enable verbose debug logging and allowing connections via {docker ip address}:8000, defaults to `false`
 * `JSONAPI`, flag indicating whether to enable the JSON API, default is `false`
 * `SERVER_URL`, the server URL, default is `http://localhost`
 
@@ -111,7 +112,7 @@ Enter the target version of the OpenCms image in your docker-compose.yml file.
         image: alkacon/opencms-docker:13.0
 ```
 
-Make sure that you have persisted your OpenCms data and MariaDB data with a Docker mount as described above to not loose any data.
+Make sure that you have persisted your OpenCms data and MariaDB data with a Docker mount as described above. Otherwise you will loose your data.
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
 
@@ -123,8 +124,7 @@ You can follow the installation process with `docker-compose logs -f opencms`.
 
 Since the image is available on Docker Hub, you do not need to build it yourself. If you want to build it anyway, here's how to do it:
 
-* via docker-compose: Go to the repository's main folder and type `docker-compose build opencms`.
-* via plain docker: Navigate to the directory `image`, where the Dockerfile is located, and execute `docker build -t alkacon/opencms-docker:13.0 .`.
+Go to the repository's main folder and type `docker-compose build opencms`.
 
 ## LICENCE
 
