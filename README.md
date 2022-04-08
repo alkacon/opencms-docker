@@ -128,6 +128,6 @@ Download the [opencms-docker](https://github.com/alkacon/opencms-docker) reposit
 
 Go to the repository's main folder and type `docker-compose build opencms`.
 
-## LICENCE
+## License
 
 View the [licence information on GitHub](https://github.com/alkacon/opencms-docker/blob/master/LICENSE).
