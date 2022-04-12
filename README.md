@@ -8,14 +8,13 @@
 
 Welcome to the official OpenCms Docker image maintained by [Alkacon](https://github.com/alkacon/).
 
-Below you will find a Docker Compose setup with a ready to use OpenCms installation including Tomcat and MariaDB.
+Here you find a Docker Compose setup with a ready to use OpenCms installation including Tomcat and MariaDB.
 
 OpenCms can be used with other databases and Servlet containers as described in the [OpenCms documentation](https://documentation.opencms.org).
 
 ## Available tags
 
-* latest
-* [13.0](https://github.com/alkacon/opencms-docker/blob/13.0/image/Dockerfile)
+* [latest, 13.0](https://github.com/alkacon/opencms-docker/blob/13.0/image/Dockerfile)
 * [12.0](https://github.com/alkacon/opencms-docker/blob/12.0/image/Dockerfile)
 * [11.0.2](https://github.com/alkacon/opencms-docker/blob/11.0.2/image/Dockerfile)
 * [11.0.1](https://github.com/alkacon/opencms-docker/blob/11.0.1/image/Dockerfile)
