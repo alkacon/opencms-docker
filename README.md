@@ -14,7 +14,8 @@ OpenCms can be used with other databases and Servlet containers as described in 
 
 ## Available tags
 
-* [latest, 14.0](https://github.com/alkacon/opencms-docker/blob/14.0/image/Dockerfile)
+* [latest, 15.0](https://github.com/alkacon/opencms-docker/blob/15.0/image/Dockerfile)
+* [14.0](https://github.com/alkacon/opencms-docker/blob/14.0/image/Dockerfile)
 * [13.0](https://github.com/alkacon/opencms-docker/blob/13.0/image/Dockerfile)
 * [12.0](https://github.com/alkacon/opencms-docker/blob/12.0/image/Dockerfile)
 * [11.0.2](https://github.com/alkacon/opencms-docker/blob/11.0.2/image/Dockerfile)
@@ -42,7 +43,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:14.0
+        image: alkacon/opencms-docker:15.0
         container_name: opencms
         init: true
         restart: always
@@ -103,13 +104,13 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 
 ## Upgrade the image
 
-If you have installed OpenCms 13.0 and want to upgrade to OpenCms 14.0, proceed as follows:
+If you have installed OpenCms 14.0 and want to upgrade to OpenCms 15.0, proceed as follows:
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:14.0
+        image: alkacon/opencms-docker:15.0
 ```
 
 Make sure that you have persisted your OpenCms data and MariaDB data with a Docker mount as described above. Otherwise you will loose your data.
