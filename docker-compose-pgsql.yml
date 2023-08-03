@@ -1,28 +1,31 @@
 services:
-    mariadb:
-        image: mariadb:latest
-        container_name: mariadb
+    postgres:
+        image: postgres:12-alpine
+        container_name: postgres
         restart: always
         volumes:
-            - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
+            ~/dockermount/opencms-docker-postgres:/var/lib/postgresql/data
         environment:
-            - MYSQL_ROOT_PASSWORD=secretDBpassword
             - TZ=Europe/Berlin
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=secretDBpassword
 
     opencms:
         image: alkacon/opencms-docker:15.0
         container_name: opencms
         build: ./image
         restart: always
-        depends_on:
-            - mariadb
-        links:
-            - mariadb:mysql
+        depends_on: 
+            - opencms_db
         ports:
             - 80:8080
         volumes:
             - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
         command: /root/wait-for.sh -t 30 -- /root/opencms-run.sh
         environment:
-            - DB_PASSWD=secretDBpassword
             - TZ=Europe/Berlin
+            - DB_PRODUCT=postgresql
+            - DB_HOST=postgres
+            - DB_PORT=5432
+            - DB_USER=postgres
+            - DB_PASSWD=secretDBpassword
