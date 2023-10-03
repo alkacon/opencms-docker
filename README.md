@@ -31,36 +31,40 @@ Images for older OpenCms versions are also available, see [here](https://github.
 
 Save the following docker-compose.yml file to your host machine.
 
-```
-version: '3.7'
+```yaml
 services:
     mariadb:
         image: mariadb:latest
         container_name: mariadb
-        init: true
         restart: always
         volumes:
             - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
         environment:
-            - "MYSQL_ROOT_PASSWORD=secretDBpassword"
+            - MYSQL_ROOT_PASSWORD=secretDBpassword
+            - TZ=Europe/Berlin
+
     opencms:
         image: alkacon/opencms-docker:16.0
         container_name: opencms
-        init: true
+        build: ./image
         restart: always
-        depends_on: [ "mariadb" ]
+        depends_on:
+            - mariadb
         links:
-            - "mariadb:mysql"
+            - mariadb:mysql
         ports:
-            - "80:8080"
+            - 80:8080
         volumes:
             - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
-        command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
+        command: /root/wait-for.sh -t 30 -- /root/opencms-run.sh
         environment:
-             - "DB_PASSWD=secretDBpassword"
+            - DB_PASSWD=secretDBpassword
+            - TZ=Europe/Berlin
 ```
 
 Change the MariaDB root password `secretDBpassword`.
+
+Other example with PostgreSQL: [docker-compose-pgsql.yml](https://github.com/alkacon/opencms-docker/blob/master/docker-compose-pgsql.yml)
 
 ### Step 2: Persist data
 
@@ -91,7 +95,9 @@ The default account is user name `Admin` with password `admin`.
 
 In addition to `DB_PASSWD`, the following Docker Compose environment variables are honored:
 
+* `DB_PRODUCT`, type of the database, `mysql` or `postgresql`, defaults to `mysql`
 * `DB_HOST`, the database host name, defaults to `mysql`
+* `DB_PORT`, the database port number, defaults to `3306`
 * `DB_USER`, the database user, default is `root`
 * `DB_PASSWD`, the database password, is not set by default
 * `DB_NAME`, the database name, default is `opencms`
@@ -102,6 +108,7 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 * `DEBUG`, flag indicating whether to enable verbose debug logging and allowing connections via {docker ip address}:8000, defaults to `false`
 * `JSONAPI`, flag indicating whether to enable the JSON API, default is `false`
 * `SERVER_URL`, the server URL, default is `http://localhost`
+* `TZ`, time zone identifier, defaults to `UTC`
 
 ## Upgrade the image
 

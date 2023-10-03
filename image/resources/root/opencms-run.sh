@@ -2,10 +2,6 @@
 
 # OpenCms startup script executed when Docker loads the image
 
-# Set the timezone
-echo "Adjusting the timezone"
-bash /root/set-timezone.sh ${TIME_ZONE}
-
 ls /root/preinit/
 
 chmod -v +x /root/preinit/*.sh

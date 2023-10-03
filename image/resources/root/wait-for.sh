@@ -71,9 +71,15 @@ do
   esac
 done
 
+# Default to envvar:
+HOST="${HOST:-$DB_HOST}"
+PORT="${PORT:-$DB_PORT}"
+
 if [ "$HOST" = "" -o "$PORT" = "" ]; then
   echoerr "Error: you need to provide a host and port to test."
   usage 2
+else
+  echo "Waiting for ${HOST}:${PORT}"
 fi
 
 wait_for "$@"

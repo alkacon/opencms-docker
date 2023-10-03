@@ -1,27 +1,28 @@
-version: '3.7'
 services:
     mariadb:
         image: mariadb:latest
         container_name: mariadb
-        init: true
         restart: always
         volumes:
             - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
         environment:
-            - "MYSQL_ROOT_PASSWORD=secretDBpassword"
+            - MYSQL_ROOT_PASSWORD=secretDBpassword
+            - TZ=Europe/Berlin
+
     opencms:
         image: alkacon/opencms-docker:16.0
         container_name: opencms
         build: ./image
-        init: true
         restart: always
-        depends_on: [ "mariadb" ]
+        depends_on:
+            - mariadb
         links:
-            - "mariadb:mysql"
+            - mariadb:mysql
         ports:
-            - "80:8080"
+            - 80:8080
         volumes:
             - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
-        command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
+        command: /root/wait-for.sh -t 30 -- /root/opencms-run.sh
         environment:
-            - "DB_PASSWD=secretDBpassword"
+            - DB_PASSWD=secretDBpassword
+            - TZ=Europe/Berlin
