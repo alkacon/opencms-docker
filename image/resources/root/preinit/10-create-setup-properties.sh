@@ -3,11 +3,12 @@
 OCSERVER=${SERVER_URL:-http://localhost}
 HWADDR=$(cat /sys/class/net/eth0/address)
 
+DB_PORT=${DB_PORT:-3306}
 DB_USER=$DB_USER
 DB_PWD=$DB_PASSWD
 DB_DB=$DB_NAME
 DB_PRODUCT=mysql
-DB_URL="jdbc:mysql://${DB_HOST}:3306/"
+DB_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/"
 DB_DRIVER=org.gjt.mm.mysql.Driver
 
 # Create setup.properties
