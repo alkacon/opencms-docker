@@ -8,13 +8,14 @@
 
 Welcome to the official OpenCms Docker image maintained by [Alkacon](https://github.com/alkacon/).
 
-Here you find a Docker Compose setup with a ready to use OpenCms installation including Tomcat and MariaDB.
+Here you find a Docker Compose setup with a ready to use OpenCms installation including Jetty and MariaDB.
 
 OpenCms can be used with other databases and Servlet containers as described in the [OpenCms documentation](https://documentation.opencms.org).
 
 ## Available tags
 
-* [latest, 16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
+* [latest, 17.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
+* [16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
 * [15.0](https://github.com/alkacon/opencms-docker/blob/15.0/image/Dockerfile)
 * [14.0](https://github.com/alkacon/opencms-docker/blob/14.0/image/Dockerfile)
 * [13.0](https://github.com/alkacon/opencms-docker/blob/13.0/image/Dockerfile)
@@ -32,7 +33,6 @@ Images for older OpenCms versions are also available, see [here](https://github.
 Save the following docker-compose.yml file to your host machine.
 
 ```
-version: '3.7'
 services:
     mariadb:
         image: mariadb:latest
@@ -44,7 +44,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:16.0
+        image: alkacon/opencms-docker:17.0
         container_name: opencms
         init: true
         restart: always
@@ -54,7 +54,8 @@ services:
         ports:
             - "80:8080"
         volumes:
-            - ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
+            # Up to image 16.0: ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
+            - ~/dockermount/opencms-docker-webapps:/container/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:
              - "DB_PASSWD=secretDBpassword"
@@ -97,30 +98,47 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 * `DB_NAME`, the database name, default is `opencms`
 * `ADMIN_PASSWD`, the admin password, defaults to `admin`
 * `OPENCMS_COMPONENTS`, the OpenCms components to install, default is `workplace,demo`; to not install the demo template use `workplace`
-* `TOMCAT_OPTS`, the Tomcat startup options, default is `-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC`
-* `WEBRESOURCES_CACHE_SIZE`, the size of tomcat's resources cache, default is `200000` (200MB)
+* `JETTY_OPTS`, the Jetty startup options (in addition to predefined options), default is `-Xmx2g`
 * `DEBUG`, flag indicating whether to enable verbose debug logging and allowing connections via {docker ip address}:8000, defaults to `false`
 * `JSONAPI`, flag indicating whether to enable the JSON API, default is `false`
 * `SERVER_URL`, the server URL, default is `http://localhost`
 
 ## Upgrade the image
 
-If you have installed OpenCms 15.0 and want to upgrade to OpenCms 16.0, proceed as follows:
+*Make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
+
+If you have installed OpenCms 16.0 and want to upgrade to OpenCms 17.0, proceed as follows:
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:16.0
+        image: alkacon/opencms-docker:17.0
 ```
 
-Make sure that you have persisted your OpenCms data and MariaDB data with a Docker mount as described above. Otherwise you will loose your data.
+Adjust the volume for the opencms service in your docker-compose.yml file:
+
+```
+    {your mount point}:/usr/local/tomcat/webapps -> {your mount point}:/container/webapps
+```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
 
-During startup, the Docker setup will update several modules as well as JAR files and configurations in the `{CATALINA_HOME}/webapps` directory.
+During startup, the Docker setup will update several modules as well as JAR files and configurations in the `/container/webapps` directory.
 
-You can follow the installation process with `docker-compose logs -f opencms`.
+You can follow the installation process with `docker compose logs -f opencms`.
+
+## Connecting to different database management systems / Custom setup properties
+
+You can use the image to install against other DBMS than MariaDB by providing a custom setup properties file.
+
+The file has to be mounted as volume to the container directly in the root folder as `/custom-setup.properties`.
+
+If you the custom file, the setup relevant environment variables `DB_HOST, DB_USER, DB_PASSWD, DB_NAME, OPENCMS_COMPONENTS, SERVER_URL` will simply be ignored.
+
+An example configuration is found under `compose/postgres/docker-compose.yml`.
+
+NOTE: *The feature is experimental*.
 
 ## Building the image
 
@@ -128,7 +146,33 @@ Since the image is available on Docker Hub, you do not need to build it yourself
 
 Download the [opencms-docker](https://github.com/alkacon/opencms-docker) repository.
 
-Go to the repository's main folder and type `docker-compose build opencms`.
+Go to the repository's main folder and type `docker compose build opencms`.
+
+### Image variant with Tomcat
+
+Up to OpenCms 16.0 the image used Tomcat as servlet container. For OpenCms 17.0 it is still possible to use Tomcat,
+but the image is not provided on Docker Hub.
+
+You can build the image using the compose file under `compose/build-tomcat/docker-compose.yml`.
+
+Running it, the environment variable `JETTY_OPTS` is ignored, but the following two variables can be set:
+
+* `TOMCAT_OPTS`, the Tomcat startup options, default is `-Xmx2g -Xms512m -server`
+* `WEBRESOURCES_CACHE_SIZE`, the size of tomcat's resources cache, default is `200000` (200MB)
+
+## Image History
+
+We list only changes relevant for building the image.
+
+### OpenCms 17.0
+
+* Switch from Tomcat to Jetty
+* Environment variable `GZIP` removed (enabled by default)
+* Environment variable `ENABLE_JLAN` removed (JLAN is disabled, use WebDAV to mount the VFS)
+* `webapps` folder is now located under `/container/`, before it was `/usr/local/tomcat/`
+* Support for custom setup properties was added
+* Docker compose files for image variations are added
+
 
 ## License
 

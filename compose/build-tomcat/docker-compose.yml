@@ -5,14 +5,14 @@ services:
         init: true
         restart: always
         volumes:
-            - ~/dockermount2/opencms-docker-mysql:/var/lib/mysql
+            - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
         image: alkacon/opencms-docker:17.0-tomcat
         container_name: opencms
         build:
-            context: ../image
+            context: ../../image
             args:
                 SERVLET_CONTAINER: tomcat
                 BASE_IMAGE: tomcat:9.0-jdk21
@@ -24,7 +24,7 @@ services:
         ports:
             - "80:8080"
         volumes:
-            - ~/dockermount2/opencms-docker-webapps:/container/webapps
+            - ~/dockermount/opencms-docker-webapps:/container/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:
             - "DB_PASSWD=secretDBpassword"
