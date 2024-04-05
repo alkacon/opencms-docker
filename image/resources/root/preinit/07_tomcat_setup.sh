@@ -9,7 +9,7 @@ fi
 # In case you need a special Tomact configuration in a downsteam image, just overwrite this configuration script.
 # Or, you can add the configuration as environment variable TOMCAT_OPTS.
 if [ -z "${TOMCAT_OPTS}" ]; then
-    TOMCAT_OPTS="-Xmx1536m -Xms256m -server -XX:+UseConcMarkSweepGC"
+    TOMCAT_OPTS="-Xmx2g -Xms512m -server"
 else
     TOMCAT_OPTS="${TOMCAT_OPTS}"
 fi
