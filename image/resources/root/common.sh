@@ -1,5 +1,5 @@
 # common shell functions for use in other scripts
-
+# The script is included via source into several other scripts
 
 function shell_classpath() {
     if [ "${SERVLET_CONTAINER}" == "tomcat" ]; then
@@ -44,7 +44,7 @@ function kill_container() {
 
 function jetty_opts() {
     local OPTS="-server -Djava.awt.headless=true -XX:-OmitStackTraceInFastThrow -DDISPLAY=:0.0"
-    if [ "$OCCO_DEBUG" == "true" ]; then
+    if [ "$DEBUG" == "true" ]; then
         OPTS="$OPTS -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -Djava.compiler=NONE"
     fi
     OPTS="$OPTS $(cat $CONTAINER_BASE/jetty-opts.txt)"
