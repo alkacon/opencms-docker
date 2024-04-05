@@ -1,17 +1,21 @@
 #!/bin/bash
 
+if [ "$SERVLET_CONTAINER" != "tomcat" ]; then
+    echo "Skipping $0 because we are not using Tomcat"
+    exit
+fi
 # Tomcat server configuration
 # This is ON PURPOSE done in the init / run phase NOT during image installation phase!
 # In case you need a special Tomact configuration in a downsteam image, just overwrite this configuration script.
 # Or, you can add the configuration as environment variable TOMCAT_OPTS.
 if [ -z "${TOMCAT_OPTS}" ]; then
-	TOMCAT_OPTS="-Xmx1536m -Xms256m -server -XX:+UseConcMarkSweepGC"
+    TOMCAT_OPTS="-Xmx1536m -Xms256m -server -XX:+UseConcMarkSweepGC"
 else
-	TOMCAT_OPTS="${TOMCAT_OPTS}"
+    TOMCAT_OPTS="${TOMCAT_OPTS}"
 fi
 
 if [ "${DEBUG}" == "true" ]; then
-	TOMCAT_OPTS="${TOMCAT_OPTS}  -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -Djava.compiler=NONE"
+    TOMCAT_OPTS="${TOMCAT_OPTS}  -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -Djava.compiler=NONE"
 fi
 
 # By default Tomcat will overwrite session cookies from multiple webapps on the same IP even different ports are used
@@ -34,7 +38,7 @@ echo "JAVA_OPTS=\"-Djava.awt.headless=true -DDISPLAY=:0.0 ${TOMCAT_OPTS}\"" > ${
 
 echo "Using OpenCms optimized server.xml configuration for Tomcat"
 if [ "$GZIP" == "true" ]; then
-	echo "Enabling GZIP compression for tomcat."
+    echo "Enabling GZIP compression for tomcat."
     sed -i 's/compression="off"/compression="on"/g' /config/server.xml
 fi
 mv -v /config/server.xml ${TOMCAT_HOME}/conf/server.xml

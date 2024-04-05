@@ -1,5 +1,9 @@
-FROM tomcat:9.0-jdk11-openjdk
+ARG BASE_IMAGE=tomcat:9.0-jdk21
+FROM $BASE_IMAGE
 LABEL org.opencontainers.image.authors="Alkacon Software GmbH"
+USER root
+ARG SERVLET_CONTAINER=tomcat
+ENV SERVLET_CONTAINER=${SERVLET_CONTAINER}
 
 #
 # This Dockerfile installs a simple OpenCms demo system.
@@ -10,17 +14,24 @@ LABEL org.opencontainers.image.authors="Alkacon Software GmbH"
 #
 
 # Variables used in the shell scripts loaded from the file system
-ENV TOMCAT_HOME=/usr/local/tomcat
+ENV DEBIAN_FRONTEND=noninteractive \
+    TMPDIR=/tmp
+
+ENV CONTAINER_BASE=/container \
+    TOMCAT_HOME=/usr/local/tomcat \
+    JETTY_HOME=/usr/local/jetty
+
 ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
-    WEBAPPS_HOME=${TOMCAT_HOME}/webapps \
-    OPENCMS_HOME=${TOMCAT_HOME}/webapps/ROOT \
+    JETTY_LIB=${JETTY_HOME}/lib \
+    WEBAPPS_HOME=${CONTAINER_BASE}/webapps \
+    OPENCMS_HOME=${CONTAINER_BASE}/webapps/ROOT \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-16.0.zip \
+    OPENCMS_URL=http://www.opencms.org/downloads/opencms/opencms-17.0.zip \
     OPENCMS_COMPONENTS=workplace,demo \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml"\
     TIME_ZONE=Europe/Berlin \
-    TOMCAT_OPTS="-Xmx1g -Xms512m -server -XX:+UseConcMarkSweepGC" \
+    TOMCAT_OPTS="-Xmx1g -Xms512m -server" \
     GZIP=true \
     ADMIN_PASSWD=admin \
     DB_HOST=mysql \
@@ -50,5 +61,5 @@ RUN \
 
 # Expose port 8080 for Tomcat and define the startup script
 EXPOSE 8080
-
+WORKDIR $CONTAINER_BASE
 CMD ["/root/opencms-run.sh"]

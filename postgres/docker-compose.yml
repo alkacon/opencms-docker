@@ -1,4 +1,3 @@
-version: '3.7'
 services:
     postgres:
         image: postgres:latest
@@ -11,7 +10,7 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
     opencms:
-        image: alkacon/opencms-docker:14.1
+        image: alkacon/opencms-docker:17.0
         container_name: opencms
         build: ../image
         init: true

@@ -24,7 +24,7 @@ then
 
     mv ${ARTIFACTS_FOLDER}TEMP/WEB-INF/lib/* ${ARTIFACTS_FOLDER}libs
     echo "Renaming modules to remove version number"
-	for file in ${ARTIFACTS_FOLDER}*.zip
+    for file in ${ARTIFACTS_FOLDER}*.zip
     do
        if [[ $file =~ .*-.*\.zip ]]; then
            mv $file ${file%-*}".zip"
@@ -68,7 +68,7 @@ then
     mv ${ARTIFACTS_FOLDER}libs/* ${OPENCMS_HOME}/WEB-INF/lib/
 
     echo "Update modules core"
-    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh ${OPENCMS_HOME}
+    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh
 else
     echo "OpenCms not installed yet, running setup"
     if [ ! -d ${WEBAPPS_HOME} ]; then
@@ -86,8 +86,12 @@ else
         echo "Changing Admin password for setup"
         sed -i -- "s/login \"Admin\" \"admin\"/login \"Admin\" \"admin\"\nsetPassword \"Admin\" \"$ADMIN_PASSWD\"\nlogin \"Admin\" \"$ADMIN_PASSWD\"/g" "${OPENCMS_HOME}/WEB-INF/setupdata/cmssetup.txt"
     fi
+
+    source /root/common.sh
+    CLASSPATH="$(shell_classpath)"
     echo "Install OpenCms using org.opencms.setup.CmsAutoSetup with properties \"${CONFIG_FILE}\"" && \
-    java -classpath "${OPENCMS_HOME}/WEB-INF/lib/*:${OPENCMS_HOME}/WEB-INF/classes:${TOMCAT_LIB}/*" org.opencms.setup.CmsAutoSetup -path ${CONFIG_FILE}
+    echo "Classpath: $CLASSPATH" && \
+    java -classpath "${CLASSPATH}" org.opencms.setup.CmsAutoSetup -path ${CONFIG_FILE}
 
     echo "Deleting no longer  used files"
     rm -rf ${OPENCMS_HOME}/setup

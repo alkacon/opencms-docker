@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ "${SERVLET_CONTAINER}" != "tomcat" ] ; then
+    echo "Skipping $0 because we are not using Tomcat."
+    exit
+fi
+
+
 CONFIG_WEBXML="${OPENCMS_HOME}/WEB-INF/web.xml"
 CONFIG_TMPFILE="/tmp/webxml.txt"
 

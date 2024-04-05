@@ -5,17 +5,17 @@ services:
         init: true
         restart: always
         volumes:
-            - ~/dockermount/opencms-docker-mysql:/var/lib/mysql
+            - ~/dockermount2/opencms-docker-mysql:/var/lib/mysql
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:17.0
+        image: alkacon/opencms-docker:17.0-tomcat
         container_name: opencms
         build:
-            context: ./image
+            context: ../image
             args:
-                SERVLET_CONTAINER: jetty
-                BASE_IMAGE: jetty:12-jdk21
+                SERVLET_CONTAINER: tomcat
+                BASE_IMAGE: tomcat:9.0-jdk21
         init: true
         restart: always
         depends_on: [ "mariadb" ]
@@ -24,7 +24,7 @@ services:
         ports:
             - "80:8080"
         volumes:
-            - ~/dockermount/opencms-docker-webapps:/container/webapps
+            - ~/dockermount2/opencms-docker-webapps:/container/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:
             - "DB_PASSWD=secretDBpassword"

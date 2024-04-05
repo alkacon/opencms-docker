@@ -1,10 +1,12 @@
 #!/bin/bash
 
 echo "=== START OPENCMS SHELL ==="
-echo "Installing modules from ${1} using OpenCms home ${2}"
+echo "Installing modules from ${1}"
+
+source /root/common.sh
 
 # Install Modules using the OpenCms Shell
-java -classpath "${2}/WEB-INF/classes:${2}/WEB-INF/lib/*:${TOMCAT_LIB}/*" \
-    org.opencms.main.CmsShell -script=${1}
-        
+java -classpath "$(shell_classpath)" \
+    org.opencms.main.CmsShell -script=${1} -base=${OPENCMS_HOME}/WEB-INF
+
 echo "=== END OPENCMS SHELL ==="
