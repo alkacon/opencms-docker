@@ -1,8 +1,8 @@
-ARG BASE_IMAGE=tomcat:9.0-jdk21
+ARG BASE_IMAGE=jetty:12-jdk21
 FROM $BASE_IMAGE
 LABEL org.opencontainers.image.authors="Alkacon Software GmbH"
 USER root
-ARG SERVLET_CONTAINER=tomcat
+ARG SERVLET_CONTAINER=jetty
 ENV SERVLET_CONTAINER=${SERVLET_CONTAINER}
 
 #
