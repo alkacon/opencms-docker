@@ -32,7 +32,6 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml"\
     TIME_ZONE=Europe/Berlin \
     TOMCAT_OPTS="-Xmx1g -Xms512m -server" \
-    GZIP=true \
     ADMIN_PASSWD=admin \
     DB_HOST=mysql \
     DB_NAME=opencms \

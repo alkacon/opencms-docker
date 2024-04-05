@@ -14,7 +14,7 @@
             connectionTimeout="20000"
             redirectPort="8443"
             URIEncoding="UTF-8"
-            compression="off"
+            compression="on"
             compressionMinSize="1024"
             noCompressionUserAgents=""
             compressableMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript"

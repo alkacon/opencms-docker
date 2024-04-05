@@ -37,8 +37,4 @@ echo "Setting java opts for Tomcat to: ${TOMCAT_OPTS}"
 echo "JAVA_OPTS=\"-Djava.awt.headless=true -DDISPLAY=:0.0 ${TOMCAT_OPTS}\"" > ${TOMCAT_HOME}/bin/setenv.sh
 
 echo "Using OpenCms optimized server.xml configuration for Tomcat"
-if [ "$GZIP" == "true" ]; then
-    echo "Enabling GZIP compression for tomcat."
-    sed -i 's/compression="off"/compression="on"/g' /config/server.xml
-fi
 mv -v /config/server.xml ${TOMCAT_HOME}/conf/server.xml
