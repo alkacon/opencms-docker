@@ -12,8 +12,6 @@ echo "."
 echo "Restarting OpenCms!"
 echo "."
 
-source /root/common.sh
-
 CONTAINER_PID=$(ps -ef | egrep 'tomcat|jetty' | grep java | awk ' { print $2 } ')
 
 if [ -z "$CONTAINER_PID" ]; then

@@ -1,5 +1,5 @@
 # common shell functions for use in other scripts
-# The script is included via source into several other scripts
+# (Included via BASH_ENV for noninteractive bash shells and is sourced in .bashrc for interactive ones)
 
 function shell_classpath() {
     if [ "${SERVLET_CONTAINER}" == "tomcat" ]; then

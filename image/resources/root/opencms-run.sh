@@ -17,8 +17,6 @@ chmod -v +x /root/postinit/*.sh
 # Execute pre-init configuration scripts
 bash /root/process-script-dir.sh /root/preinit runonce
 
-source /root/common.sh
-
 start_container
 
 # Write startup time to file

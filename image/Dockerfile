@@ -19,7 +19,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 ENV CONTAINER_BASE=/container \
     TOMCAT_HOME=/usr/local/tomcat \
-    JETTY_HOME=/usr/local/jetty
+    JETTY_HOME=/usr/local/jetty \
+    BASH_ENV=/root/common.sh
 
 ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     JETTY_LIB=${JETTY_HOME}/lib \
@@ -55,7 +56,10 @@ RUN \
 COPY resources /
 
 RUN \
+    echo "Make scripts under /root/ executable" && \
     chmod +x /root/*.sh && \
+    echo "Update .bashrc" && \
+    echo "source /root/common.sh" >> /root/.bashrc && \
     bash /root/opencms-fetch.sh && \
     rm -rf ${WEBAPPS_HOME}/*
 
