@@ -14,7 +14,7 @@ OpenCms can be used with other databases and Servlet containers as described in 
 
 ## Available tags
 
-* [latest, 17.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
+* [latest, 17.0](https://github.com/alkacon/opencms-docker/blob/17.0/image/Dockerfile)
 * [16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
 * [15.0](https://github.com/alkacon/opencms-docker/blob/15.0/image/Dockerfile)
 * [14.0](https://github.com/alkacon/opencms-docker/blob/14.0/image/Dockerfile)
