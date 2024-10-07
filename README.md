@@ -129,7 +129,7 @@ During startup, the Docker setup will update several modules as well as JAR file
 
 You can follow the installation process with `docker compose logs -f opencms`.
 
-*When upgrading to OpenCms 18.0 you need to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version is updated.*
+*When upgrading to OpenCms 18.0 it is strongly recommended to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version is updated.*
 
 ## Connecting to different database management systems / Custom setup properties
 
