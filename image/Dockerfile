@@ -46,7 +46,7 @@ RUN \
     echo "Update the apt packet repos" && \
     apt-get update && \
     echo "Install utils" && \
-    apt-get install -yq --no-install-recommends procps wget unzip xsltproc netcat && \
+    apt-get install -yq --no-install-recommends procps wget unzip xsltproc netcat-openbsd && \
     echo "Clean up apt" && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get autoremove && \
