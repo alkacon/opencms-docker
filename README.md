@@ -14,7 +14,8 @@ OpenCms can be used with other databases and Servlet containers as described in 
 
 ## Available tags
 
-* [latest, 17.0](https://github.com/alkacon/opencms-docker/blob/17.0/image/Dockerfile)
+* [latest, 18.0](https://github.com/alkacon/opencms-docker/blob/18.0/image/Dockerfile)
+* [17.0](https://github.com/alkacon/opencms-docker/blob/17.0/image/Dockerfile)
 * [16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
 * [15.0](https://github.com/alkacon/opencms-docker/blob/15.0/image/Dockerfile)
 * [14.0](https://github.com/alkacon/opencms-docker/blob/14.0/image/Dockerfile)
@@ -44,7 +45,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:17.0
+        image: alkacon/opencms-docker:18.0
         container_name: opencms
         init: true
         restart: always
@@ -107,16 +108,16 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 
 *Make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
 
-If you have installed OpenCms 16.0 and want to upgrade to OpenCms 17.0, proceed as follows:
+If you have installed OpenCms 17.0 and want to upgrade to OpenCms 18.0, proceed as follows:
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:17.0
+        image: alkacon/opencms-docker:18.0
 ```
 
-Adjust the volume for the opencms service in your docker-compose.yml file:
+If you update from 16.0, additionally adjust the volume for the opencms service in your docker-compose.yml file:
 
 ```
     {your mount point}:/usr/local/tomcat/webapps -> {your mount point}:/container/webapps
@@ -127,6 +128,8 @@ Navigate to the folder with the docker-compose.yml file and execute `docker-comp
 During startup, the Docker setup will update several modules as well as JAR files and configurations in the `/container/webapps` directory.
 
 You can follow the installation process with `docker compose logs -f opencms`.
+
+*When upgrading to OpenCms 18.0 you need to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version is updated.*
 
 ## Connecting to different database management systems / Custom setup properties
 
@@ -150,7 +153,7 @@ Go to the repository's main folder and type `docker compose build opencms`.
 
 ### Image variant with Tomcat
 
-Up to OpenCms 16.0 the image used Tomcat as servlet container. For OpenCms 17.0 it is still possible to use Tomcat,
+Up to OpenCms 16.0 the image used Tomcat as servlet container. For OpenCms 17.0 and later it is still possible to use Tomcat,
 but the image is not provided on Docker Hub.
 
 You can build the image using the compose file under `compose/build-tomcat/docker-compose.yml`.
