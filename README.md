@@ -14,7 +14,8 @@ OpenCms can be used with other databases and Servlet containers as described in 
 
 ## Available tags
 
-* [latest, 18.0](https://github.com/alkacon/opencms-docker/blob/18.0/image/Dockerfile)
+* [latest, 19.0](https://github.com/alkacon/opencms-docker/blob/19.0/image/Dockerfile)
+* [18.0](https://github.com/alkacon/opencms-docker/blob/18.0/image/Dockerfile)
 * [17.0](https://github.com/alkacon/opencms-docker/blob/17.0/image/Dockerfile)
 * [16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
 * [15.0](https://github.com/alkacon/opencms-docker/blob/15.0/image/Dockerfile)
@@ -45,7 +46,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:18.0
+        image: alkacon/opencms-docker:19.0
         container_name: opencms
         init: true
         restart: always
@@ -108,13 +109,13 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 
 *Make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
 
-If you have installed OpenCms 17.0 and want to upgrade to OpenCms 18.0, proceed as follows:
+If you have installed OpenCms 17.0 or later and want to upgrade to OpenCms 19.0, proceed as follows:
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:18.0
+        image: alkacon/opencms-docker:19.0
 ```
 
 If you update from 16.0, additionally adjust the volume for the opencms service in your docker-compose.yml file:
@@ -129,7 +130,7 @@ During startup, the Docker setup will update several modules as well as JAR file
 
 You can follow the installation process with `docker compose logs -f opencms`.
 
-*When upgrading to OpenCms 18.0 it is strongly recommended to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version is updated.*
+*When upgrading it is strongly recommended to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version might be updated.*
 
 ## Connecting to different database management systems / Custom setup properties
 
