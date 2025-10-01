@@ -10,11 +10,12 @@ Welcome to the official OpenCms Docker image maintained by [Alkacon](https://git
 
 Here you find a Docker Compose setup with a ready to use OpenCms installation including Jetty and MariaDB.
 
-OpenCms can be used with other databases and Servlet containers as described in the [OpenCms documentation](https://documentation.opencms.org).
+OpenCms can be used with other databases as described below.
 
 ## Available tags
 
-* [latest, 19.0](https://github.com/alkacon/opencms-docker/blob/19.0/image/Dockerfile)
+* [latest, 20.0](https://github.com/alkacon/opencms-docker/blob/20.0/image/Dockerfile)
+* [19.0](https://github.com/alkacon/opencms-docker/blob/19.0/image/Dockerfile)
 * [18.0](https://github.com/alkacon/opencms-docker/blob/18.0/image/Dockerfile)
 * [17.0](https://github.com/alkacon/opencms-docker/blob/17.0/image/Dockerfile)
 * [16.0](https://github.com/alkacon/opencms-docker/blob/16.0/image/Dockerfile)
@@ -32,7 +33,7 @@ Images for older OpenCms versions are also available, see [here](https://github.
 
 ### Step 1: docker-compose.yml
 
-Save the following docker-compose.yml file to your host machine.
+Save the following *docker-compose.yml* file to your host machine.
 
 ```
 services:
@@ -46,7 +47,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:19.0
+        image: alkacon/opencms-docker:20.0
         container_name: opencms
         init: true
         restart: always
@@ -56,7 +57,6 @@ services:
         ports:
             - "80:8080"
         volumes:
-            # Up to image 16.0: ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
             - ~/dockermount/opencms-docker-webapps:/container/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:
@@ -78,7 +78,7 @@ On the other hand, if you like to start with a completely fresh OpenCms installa
 
 ### Step 3: Start OpenCms and MariaDB
 
-Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
+Navigate to the folder with the *docker-compose.yml* file and execute `docker-compose up -d`.
 
 Startup will take a while since numerous modules are installed.
 
@@ -86,13 +86,13 @@ You can follow the installation process with `docker-compose logs -f opencms`.
 
 ### Step 4: Login to OpenCms
 
-When the containers are set up, you can access OpenCms via `http://localhost/system/login`.
+When the containers are set up, you can access OpenCms workplace via `http://localhost/system/login`.
 
 The default account is user name `Admin` with password `admin`.
 
 ## Environment variables
 
-In addition to `DB_PASSWD`, the following Docker Compose environment variables are honored:
+In addition to `DB_PASSWD`, the following environment variables are supported:
 
 * `DB_HOST`, the database host name, defaults to `mysql`
 * `DB_USER`, the database user, default is `root`
@@ -107,21 +107,15 @@ In addition to `DB_PASSWD`, the following Docker Compose environment variables a
 
 ## Upgrade the image
 
-*Make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
+*Before upgrading the image, make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
 
-If you have installed OpenCms 17.0 or later and want to upgrade to OpenCms 19.0, proceed as follows:
+*When upgrading from an older version of this image, read the image history below at first.*
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:19.0
-```
-
-If you update from 16.0, additionally adjust the volume for the opencms service in your docker-compose.yml file:
-
-```
-    {your mount point}:/usr/local/tomcat/webapps -> {your mount point}:/container/webapps
+        image: alkacon/opencms-docker:20.0
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
@@ -130,19 +124,21 @@ During startup, the Docker setup will update several modules as well as JAR file
 
 You can follow the installation process with `docker compose logs -f opencms`.
 
-*When upgrading it is strongly recommended to remove the folder `WEB-INF/index` after the upgrade and recreate the indexes after the upgrade since the Solr version might be updated.*
+*It is recommended to remove the* `/container/webapps/ROOT/WEB-INF/index` *folder after upgrade and do a full Solr reindex.*
 
-## Connecting to different database management systems / Custom setup properties
+## Support for other databases
 
-You can use the image to install against other DBMS than MariaDB by providing a custom setup properties file.
+OpenCms uses a special configuration file called [setup.properties](https://github.com/alkacon/opencms-core/blob/master/src-setup/org/opencms/setup/setup.properties.example) to establish a database connection.
 
-The file has to be mounted as volume to the container directly in the root folder as `/custom-setup.properties`.
+In order to connect to a database other than MariaDB, this image supports connection via a custom *setup.properties* file.
 
-If you the custom file, the setup relevant environment variables `DB_HOST, DB_USER, DB_PASSWD, DB_NAME, OPENCMS_COMPONENTS, SERVER_URL` will simply be ignored.
+The file must be named `custom-setup.properties` and must be available in the root folder of the docker container.
 
-An example configuration is found under `compose/postgres/docker-compose.yml`.
+An example setup for PostgreSQL can be found [here](https://github.com/alkacon/opencms-docker/tree/master/compose/postgres).
 
-NOTE: *The feature is experimental*.
+For more information on the DB configuration options, see the [OpenCms documentation](https://documentation.opencms.org/opencms-documentation/server-administration/headless-installation/).
+
+Note: when using a custom configuration file, the environment variables `DB_HOST, DB_USER, DB_PASSWD, DB_NAME, OPENCMS_COMPONENTS, SERVER_URL` are ignored.
 
 ## Building the image
 
@@ -152,31 +148,16 @@ Download the [opencms-docker](https://github.com/alkacon/opencms-docker) reposit
 
 Go to the repository's main folder and type `docker compose build opencms`.
 
-### Image variant with Tomcat
-
-Up to OpenCms 16.0 the image used Tomcat as servlet container. For OpenCms 17.0 and later it is still possible to use Tomcat,
-but the image is not provided on Docker Hub.
-
-You can build the image using the compose file under `compose/build-tomcat/docker-compose.yml`.
-
-Running it, the environment variable `JETTY_OPTS` is ignored, but the following two variables can be set:
-
-* `TOMCAT_OPTS`, the Tomcat startup options, default is `-Xmx2g -Xms512m -server`
-* `WEBRESOURCES_CACHE_SIZE`, the size of tomcat's resources cache, default is `200000` (200MB)
-
 ## Image History
-
-We list only changes relevant for building the image.
 
 ### OpenCms 17.0
 
-* Switch from Tomcat to Jetty
-* Environment variable `GZIP` removed (enabled by default)
-* Environment variable `ENABLE_JLAN` removed (JLAN is disabled, use WebDAV to mount the VFS)
+* Switch from **Tomcat** to **Jetty**!
+* CHANGE THE MOUNT POINT: `{your mount point}:/usr/local/tomcat/webapps -> {your mount point}:/container/webapps`
 * `webapps` folder is now located under `/container/`, before it was `/usr/local/tomcat/`
-* Support for custom setup properties was added
-* Docker compose files for image variations are added
-
+* Environment variable `GZIP` removed (enabled by default)
+* Environment variable `ENABLE_JLAN` removed (JLAN is disabled, use WebDAV instead)
+* Support for custom `setup.properties` configuration files
 
 ## License
 
