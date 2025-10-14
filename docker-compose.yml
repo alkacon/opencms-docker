@@ -14,7 +14,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:19.0
+        image: alkacon/opencms-docker:20.0
         container_name: opencms
         build:
             context: ./image
@@ -29,7 +29,6 @@ services:
         ports:
             - "80:8080"
         volumes:
-            # Up to image 16.0: ~/dockermount/opencms-docker-webapps:/usr/local/tomcat/webapps
             - ~/dockermount/opencms-docker-webapps:/container/webapps
         command: ["/root/wait-for.sh", "mysql:3306", "-t", "30", "--", "/root/opencms-run.sh"]
         environment:

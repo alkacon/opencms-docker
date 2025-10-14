@@ -10,7 +10,7 @@ services:
             - POSTGRES_PASSWORD=root
             - POSTGRES_USER=root
     opencms:
-        image: alkacon/opencms-docker:19.0
+        image: alkacon/opencms-docker:20.0
         container_name: opencms
         init: true
 #        restart: always
