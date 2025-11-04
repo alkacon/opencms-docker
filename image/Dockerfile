@@ -33,13 +33,15 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml WEB-INF/solr/configsets/default/conf/solrconfig.xml WEB-INF/solr/spellcheck/conf/solrconfig.xml"\
     TIME_ZONE=Europe/Berlin \
     JETTY_OPTS="-Xmx2g" \
-    TOMCAT_OPTS=\
+    TOMCAT_OPTS= \
     ADMIN_PASSWD=admin \
+    ADMIN_PASSWD_FILE= \
     DB_HOST=mysql \
     DB_NAME=opencms \
     DB_USER=root \
-    DB_PASSWD=\
-    WEBRESOURCES_CACHE_SIZE=200000\
+    DB_PASSWD= \
+    DB_PASSWD_FILE= \
+    WEBRESOURCES_CACHE_SIZE=200000 \
     DEBUG=false
 
 RUN \

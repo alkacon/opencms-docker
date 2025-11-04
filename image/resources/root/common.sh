@@ -1,6 +1,33 @@
 # common shell functions for use in other scripts
 # (Included via BASH_ENV for noninteractive bash shells and is sourced in .bashrc for interactive ones)
 
+function get_secret() {
+    if [ -z "${1+x}" ] || [ -z "${2+x}" ]; then
+        echo "Two args required."
+        return 1
+    fi
+    if [[ "$1" != *_FILE ]]; then
+        echo "Arg 1 must end with the _FILE suffix."
+        return 1
+    fi
+    local sec_file="$1"
+    local sec_env="$2"
+    if [[ -n "${!sec_file}" ]]; then
+        if [[ -f "${!sec_file}" ]]; then
+            local password
+            password=$(<"${!sec_file}")
+            echo "${password}" | xargs
+        else
+            echo "File ${sec_file}=${!sec_file} not found."
+        fi
+    elif [[ -n "${!sec_env}" ]]; then
+        echo "${!sec_env}"
+    else
+        echo "Either ${sec_file} or ${sec_env} must be set."
+        return 1
+    fi
+}
+
 function shell_classpath() {
     if [ "${SERVLET_CONTAINER}" == "tomcat" ]; then
         echo "${OPENCMS_HOME}/WEB-INF/lib/*:${OPENCMS_HOME}/WEB-INF/classes:${TOMCAT_LIB}/*"

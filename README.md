@@ -86,9 +86,9 @@ You can follow the installation process with `docker-compose logs -f opencms`.
 
 ### Step 4: Login to OpenCms
 
-When the containers are set up, you can access OpenCms workplace via `http://localhost/system/login`.
+When the containers are set up, you can access the OpenCms workplace via `http://localhost/system/login`.
 
-The default account is user name `Admin` with password `admin`.
+The default account is username `Admin` with password `admin`.
 
 ## Environment variables
 
@@ -97,8 +97,10 @@ In addition to `DB_PASSWD`, the following environment variables are supported:
 * `DB_HOST`, the database host name, defaults to `mysql`
 * `DB_USER`, the database user, default is `root`
 * `DB_PASSWD`, the database password, is not set by default
+* `DB_PASSWD_FILE`, file in the container where the database password is stored (`/run/secrets/<secret_name>`); to be used with docker compose `secrets`
 * `DB_NAME`, the database name, default is `opencms`
 * `ADMIN_PASSWD`, the admin password, defaults to `admin`
+* `ADMIN_PASSWD_FILE`, file in the container where the admin password is stored (`/run/secrets/<secret_name>`); to be used with docker compose `secrets`
 * `OPENCMS_COMPONENTS`, the OpenCms components to install, default is `workplace,demo`; to not install the demo template use `workplace`
 * `JETTY_OPTS`, the Jetty startup options (in addition to predefined options), default is `-Xmx2g`
 * `DEBUG`, flag indicating whether to enable verbose debug logging and allowing connections via {docker ip address}:8000, defaults to `false`
@@ -147,17 +149,6 @@ Since the image is available on Docker Hub, you do not need to build it yourself
 Download the [opencms-docker](https://github.com/alkacon/opencms-docker) repository.
 
 Go to the repository's main folder and type `docker compose build opencms`.
-
-## Image History
-
-### OpenCms 17.0
-
-* Switch from **Tomcat** to **Jetty**!
-* CHANGE THE MOUNT POINT: `{your mount point}:/usr/local/tomcat/webapps -> {your mount point}:/container/webapps`
-* `webapps` folder is now located under `/container/`, before it was `/usr/local/tomcat/`
-* Environment variable `GZIP` removed (enabled by default)
-* Environment variable `ENABLE_JLAN` removed (JLAN is disabled, use WebDAV instead)
-* Support for custom `setup.properties` configuration files
 
 ## License
 

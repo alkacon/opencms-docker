@@ -9,7 +9,7 @@ else
     HWADDR=$(cat /sys/class/net/eth0/address)
 
     DB_USER=$DB_USER
-    DB_PWD=$DB_PASSWD
+    DB_PWD=$(get_secret DB_PASSWD_FILE DB_PASSWD)
     DB_DB=$DB_NAME
     DB_PRODUCT=mysql
     DB_URL="jdbc:mysql://${DB_HOST}:3306/"

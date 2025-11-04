@@ -13,9 +13,10 @@ if [ -f "${OPENCMS_HOME}/WEB-INF/lib/opencms.jar" ]
 then
     echo "OpenCms already installed, updating modules and libs"
 
-    if [ ! -z "$ADMIN_PASSWD" ]; then
+    admin_passwd=$(get_secret ADMIN_PASSWD_FILE ADMIN_PASSWD)
+    if [ ! -z "$admin_passwd" ]; then
         echo "Changing Admin password for update"
-        sed -i -- "s/Admin admin/\"Admin\" \"${ADMIN_PASSWD}\"/g" /config/update*
+        sed -i -- "s/Admin admin/\"Admin\" \"${admin_passwd}\"/g" /config/update*
     fi
 
     echo "Extract modules and libs"
