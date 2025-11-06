@@ -53,7 +53,8 @@ function start_tomcat() {
 
 function start_jetty() {
     cd $CONTAINER_BASE
-    java $(jetty_opts) -jar $JETTY_HOME/start.jar >> ${CONTAINER_BASE}/jetty.out 2>&1 &
+    cmd="java $(jetty_opts) -jar ${JETTY_HOME}/start.jar >> ${CONTAINER_BASE}/jetty.out 2>&1"
+    gosu jetty sh -c "$cmd" &
 }
 
 function kill_container() {
