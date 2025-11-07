@@ -25,6 +25,8 @@ ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
 
 ENV OPENCMS_COMPONENTS=workplace,demo \
     OPENCMS_USER=opencms \
+    OPENCMS_UID=998 \
+    OPENCMS_GID=998 \
     TIME_ZONE=Europe/Berlin \
     JETTY_OPTS="-Xmx2g" \
     TOMCAT_OPTS= \
@@ -38,6 +40,8 @@ ENV OPENCMS_COMPONENTS=workplace,demo \
     WEBRESOURCES_CACHE_SIZE=200000 \
     DEBUG=false
 
+ENV RUN_AS_USER=${OPENCMS_USER}
+
 RUN \
     echo "Update the apt packet repos" && \
     apt-get update && \
@@ -45,10 +49,11 @@ RUN \
     apt-get install -yq --no-install-recommends procps wget unzip xsltproc netcat-openbsd gosu && \
     echo "Clean up apt" && \
     rm -rf /var/lib/apt/lists/* && \
-    groupadd -r opencms && \
-    useradd -r -g opencms opencms && \
     apt-get autoremove && \
-    apt-get clean
+    apt-get clean && \
+    echo "Create user opencms" && \
+    groupadd --gid ${OPENCMS_GID} opencms && \
+    useradd --uid ${OPENCMS_UID} --gid ${OPENCMS_GID} -m opencms
 
 # Create the setup configuration file
 COPY resources /
