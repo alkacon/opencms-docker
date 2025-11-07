@@ -1,8 +1,3 @@
-# Default build/run file for the OpenCms docker image.
-# The image uses Jetty and Java 21.
-# It connects to a MariaDB database, running as second container.
-# To persist data, volumes are defined. Adjust the mount points to your needs,
-# or remove the volumes if data should not be persisted.
 services:
     mariadb:
         image: mariadb:latest

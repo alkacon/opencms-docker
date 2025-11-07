@@ -48,13 +48,14 @@ function start_container() {
 }
 
 function start_tomcat() {
-    ${TOMCAT_HOME}/bin/catalina.sh run >> ${TOMCAT_HOME}/logs/catalina.out 2>&1 &
+    cmd="${TOMCAT_HOME}/bin/catalina.sh run >> ${TOMCAT_HOME}/logs/catalina.out 2>&1"
+    gosu ${OPENCMS_USER} sh -c "$cmd" &
 }
 
 function start_jetty() {
     cd $CONTAINER_BASE
     cmd="java $(jetty_opts) -jar ${JETTY_HOME}/start.jar >> ${CONTAINER_BASE}/jetty.out 2>&1"
-    gosu jetty sh -c "$cmd" &
+    gosu ${OPENCMS_USER} sh -c "$cmd" &
 }
 
 function kill_container() {

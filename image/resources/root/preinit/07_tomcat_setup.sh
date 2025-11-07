@@ -4,6 +4,7 @@ if [ "$SERVLET_CONTAINER" != "tomcat" ]; then
     echo "Skipping $0 because we are not using Tomcat"
     exit
 fi
+
 # Tomcat server configuration
 # This is ON PURPOSE done in the init / run phase NOT during image installation phase!
 # In case you need a special Tomact configuration in a downsteam image, just overwrite this configuration script.
