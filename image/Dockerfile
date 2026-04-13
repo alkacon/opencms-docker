@@ -15,7 +15,7 @@ ENV CONTAINER_BASE=/container \
     BASH_ENV=/root/common.sh \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=https://github.com/alkacon/opencms-core/releases/download/build_20_0_0/opencms-21.0-distribution.zip \
+    OPENCMS_URL=https://github.com/alkacon/opencms-core/releases/download/build_21_0_0/opencms-21.0-distribution.zip \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml WEB-INF/solr/configsets/default/conf/solrconfig.xml WEB-INF/solr/spellcheck/conf/solrconfig.xml"
 
 ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \
