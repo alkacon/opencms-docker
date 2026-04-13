@@ -9,7 +9,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:20.1
+        image: alkacon/opencms-docker:21.0
         container_name: opencms
         build:
             context: ./image

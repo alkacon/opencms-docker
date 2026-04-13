@@ -14,7 +14,8 @@ OpenCms can be used with other databases as described below.
 
 ## Available tags
 
-* [latest, 20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
+* [latest, 21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
+* [20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
 * [20.0](https://github.com/alkacon/opencms-docker/blob/20.0/image/Dockerfile)
 * [19.0](https://github.com/alkacon/opencms-docker/blob/19.0/image/Dockerfile)
 * [18.0](https://github.com/alkacon/opencms-docker/blob/18.0/image/Dockerfile)
@@ -48,7 +49,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:20.1
+        image: alkacon/opencms-docker:21.0
         container_name: opencms
         init: true
         restart: always
@@ -114,13 +115,11 @@ The variables `DB_PASSWD` and `DB_PASSWD_FILE` respectively `ADMIN_PASSWD` and `
 
 *Before upgrading the image, make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
 
-*When upgrading from an older version of this image, read the image history below at first.*
-
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:20.1
+        image: alkacon/opencms-docker:21.0
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
