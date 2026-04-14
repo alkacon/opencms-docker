@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=jetty:12-jdk21
+ARG BASE_IMAGE=jetty:12-jdk25
 FROM $BASE_IMAGE
 LABEL org.opencontainers.image.authors="Alkacon Software GmbH & Co. KG"
 USER root

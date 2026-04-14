@@ -15,7 +15,7 @@ services:
             context: ./image
             args:
                 SERVLET_CONTAINER: jetty
-                BASE_IMAGE: jetty:12-jdk21
+                BASE_IMAGE: jetty:12-jdk25
         init: true
         restart: always
         depends_on: [ "mariadb" ]
