@@ -14,7 +14,8 @@ OpenCms can be used with other databases as described below.
 
 ## Available tags
 
-* [latest, 21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
+* [latest, 21.0.1](https://github.com/alkacon/opencms-docker/blob/21.0.1/image/Dockerfile)
+* [21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
 * [20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
 * [20.0](https://github.com/alkacon/opencms-docker/blob/20.0/image/Dockerfile)
 * [19.0](https://github.com/alkacon/opencms-docker/blob/19.0/image/Dockerfile)
@@ -49,7 +50,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:21.0
+        image: alkacon/opencms-docker:21.0.1
         container_name: opencms
         init: true
         restart: always
@@ -119,7 +120,7 @@ Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:21.0
+        image: alkacon/opencms-docker:21.0.1
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
