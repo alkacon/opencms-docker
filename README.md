@@ -106,7 +106,7 @@ In addition to `DB_PASSWD`, the following environment variables are supported:
 * `ADMIN_PASSWD_FILE`, file in the container where the admin password is stored (`/run/secrets/<secret_name>`); to be used with docker compose `secrets`
 * `OPENCMS_COMPONENTS`, the OpenCms components to install, default is `workplace,demo`; to not install the demo template use `workplace`
 * `JETTY_OPTS`, the Jetty startup options (in addition to predefined options), default is `-Xmx2g`
-* `DEBUG`, flag indicating whether to enable verbose debug logging and allowing connections via {docker ip address}:8000, defaults to `false`
+* `DEBUG`, flag indicating whether to enable remote Java debugging on port `8000`, defaults to `false`; publish the port (for example, `8000:8000`) to connect through the Docker host
 * `JSONAPI`, flag indicating whether to enable the JSON API, default is `false`
 * `SERVER_URL`, the server URL, default is `http://localhost`
 

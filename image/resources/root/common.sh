@@ -74,11 +74,10 @@ function kill_container() {
 function jetty_opts() {
     local OPTS="-server -Djava.awt.headless=true -XX:-OmitStackTraceInFastThrow -DDISPLAY=:0.0"
     if [ "$DEBUG" == "true" ]; then
-        OPTS="$OPTS -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:8000 -Djava.compiler=NONE"
+        OPTS="$OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000"
     fi
     OPTS="$OPTS $(cat $CONTAINER_BASE/jetty-opts.txt)"
     echo "$OPTS"
 }
-
 
 
