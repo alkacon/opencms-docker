@@ -34,8 +34,9 @@ function shell_classpath() {
     elif [ "${SERVLET_CONTAINER}" == "jetty" ]; then
         # Jetty libraries in OpenCms which are needed for Solr would cause a version conflict with the libraries included in Jetty,
         # so we have to specifically only include the servlet/JSP API libs in the CmsShell classpath.
-        local SERVLET_API=$(find ${JETTY_LIB} -maxdepth 1 -name 'jetty-servlet-api*.jar' | head -1)
-        echo "${OPENCMS_HOME}/WEB-INF/lib/*:${OPENCMS_HOME}/WEB-INF/classes:$SERVLET_API:${JETTY_HOME}/lib/ee8-apache-jsp/*"
+        local servlet_api
+        servlet_api=$(find "${JETTY_LIB}" -maxdepth 1 -name 'jakarta.servlet-api*.jar' | sort -V | head -1)
+        echo "${OPENCMS_HOME}/WEB-INF/lib/*:${OPENCMS_HOME}/WEB-INF/classes:${servlet_api}:${JETTY_HOME}/lib/ee10-apache-jsp/*"
     fi
 }
 
@@ -79,5 +80,3 @@ function jetty_opts() {
     OPTS="$OPTS $(cat $CONTAINER_BASE/jetty-opts.txt)"
     echo "$OPTS"
 }
-
-

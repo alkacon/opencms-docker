@@ -9,13 +9,13 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:21.1
+        image: alkacon/opencms-docker:22.0
         container_name: opencms
         build:
             context: ./image
             args:
                 SERVLET_CONTAINER: jetty
-                BASE_IMAGE: jetty:12-jdk25
+                BASE_IMAGE: jetty:12.1.13-jdk25
         init: true
         restart: always
         depends_on: [ "mariadb" ]

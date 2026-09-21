@@ -1,1 +1,4 @@
-# It never hurts to have a .gitignore file in the project :) 
+# It never hurts to have a .gitignore file in the project :)
+
+# Optional local OpenCms build artifacts.
+/image/resources/artifacts/

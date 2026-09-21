@@ -5,6 +5,9 @@ setSiteRoot "/"
 replaceModule "/artifacts/org.opencms.base.zip"
 replaceModule "/artifacts/org.opencms.configuration.zip"
 
-exit
+# Module publishing queues updates for the asynchronous offline index. Wait for that queue before
+# CmsShell shuts down and closes the external Solr client.
+updateOfflineIndexes
 
+exit
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CONFIG_FOLDER="${OPENCMS_HOME}/WEB-INF/config/"
-XSLT_DIR="/root/preinit/xml-transformations"
+XSLT_DIR="${1:-/root/preinit/xml-transformations}"
 echo "Executing XSL transformation of OpenCms config files."
 if [ -d "${XSLT_DIR}" ]; then
     for XSLT in "${XSLT_DIR}"/*.xslt; do

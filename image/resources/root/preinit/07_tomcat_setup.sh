@@ -29,9 +29,12 @@ echo "Setting webresources cache size to override defaults"
 sed -i "s/<\/Context>/<Resources cachingAllowed=\"true\" cacheMaxSize=\"${WEBRESOURCES_CACHE_SIZE}\" \/><\/Context>/" ${TOMCAT_HOME}/conf/context.xml
 
 # Disabling session persistence
-# Disable JAR scanning for servlets and restrict TLD scanning to the JSTL JAR to speed up Tomcat start
+# Disable JAR scanning for servlets and restrict TLD scanning to the Jakarta JSTL JAR to speed up Tomcat start
 echo "Disabling session persistence and adding JAR scanner filter ..."
-sed -i "s/<\/Context>/<Manager pathname=\"\" \/><JarScanner><JarScanFilter pluggabilitySkip=\"\*.jar\" tldSkip=\"\*.jar\" tldScan=\"javax.servlet.jsp.jstl-\*.jar\"\/><\/JarScanner><\/Context>/" ${TOMCAT_HOME}/conf/context.xml
+sed -i "s/<\/Context>/<Manager pathname=\"\" \/><JarScanner><JarScanFilter pluggabilitySkip=\"\*.jar\" tldSkip=\"\*.jar\" tldScan=\"jakarta.servlet.jsp.jstl-\*.jar\"\/><\/JarScanner><\/Context>/" ${TOMCAT_HOME}/conf/context.xml
+
+# Tomcat tries to create this directory after privileges have been dropped to the OpenCms user.
+mkdir -p ${TOMCAT_HOME}/conf/Catalina/localhost
 
 
 echo "Setting java opts for Tomcat to: ${TOMCAT_OPTS}"

@@ -1,6 +1,10 @@
 #!/bin/bash
 
-
+# Select an optional local WAR variant before falling back to the published distribution.
+LOCAL_OPENCMS_WAR="${ARTIFACTS_FOLDER}${OPENCMS_WAR_FILE:-opencms.war}"
+if [ -s "${LOCAL_OPENCMS_WAR}" ] && [ "${LOCAL_OPENCMS_WAR}" != "${ARTIFACTS_FOLDER}opencms.war" ]; then
+	cp "${LOCAL_OPENCMS_WAR}" "${ARTIFACTS_FOLDER}opencms.war"
+fi
 
 # Check if a file opencms.war is not available, if so download from the web 
 if [ ! -s ${ARTIFACTS_FOLDER}opencms.war ] 

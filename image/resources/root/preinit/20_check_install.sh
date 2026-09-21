@@ -1,4 +1,19 @@
 #!/bin/bash
+
+function configure_opencms_before() {
+    local operation="$1"
+    local autosetup_config_dir="${AUTOSETUP_CONFIG_DIR:-/root/autosetup}"
+
+    if compgen -G "${autosetup_config_dir}/*.sh" > /dev/null; then
+        echo "Configuring OpenCms before ${operation} using scripts from ${autosetup_config_dir}"
+        # Unlike the general pre-init processor, configuration failures here must abort the
+        # installation or update instead of continuing with a partially prepared webapp.
+        bash -e /root/process-script-dir.sh "${autosetup_config_dir}" || exit $?
+    else
+        echo "No configuration scripts found in ${autosetup_config_dir} before ${operation}, skipping"
+    fi
+}
+
 if [ ! -d ${ARTIFACTS_FOLDER}libs ]; then
     mkdir -v -p ${ARTIFACTS_FOLDER}libs
 fi
@@ -65,11 +80,21 @@ then
             rm -f -v ${OPENCMS_HOME}/${CORE_LIB}
         done
     fi
-    echo "Moving new JARs"
-    mv ${ARTIFACTS_FOLDER}libs/* ${OPENCMS_HOME}/WEB-INF/lib/
+    echo "Replacing library directories"
+    for SOURCE_DIR in "${ARTIFACTS_FOLDER}libs/"*/
+    do
+        if [ -d "${SOURCE_DIR}" ]; then
+            TARGET_DIR="${OPENCMS_HOME}/WEB-INF/lib/$(basename "${SOURCE_DIR}")"
+            rm -rf "${TARGET_DIR}"
+        fi
+    done
+    echo "Moving new JARs and library directories"
+    mv "${ARTIFACTS_FOLDER}libs/"* "${OPENCMS_HOME}/WEB-INF/lib/" || exit $?
+
+    configure_opencms_before "the core module update"
 
     echo "Update modules core"
-    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh
+    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh || exit $?
 else
     echo "OpenCms not installed yet, running setup"
     if [ ! -d ${WEBAPPS_HOME} ]; then
@@ -87,6 +112,8 @@ else
         echo "Changing Admin password for setup"
         sed -i -- "s/login \"Admin\" \"admin\"/login \"Admin\" \"admin\"\nsetPassword \"Admin\" \"$ADMIN_PASSWD\"\nlogin \"Admin\" \"$ADMIN_PASSWD\"/g" "${OPENCMS_HOME}/WEB-INF/setupdata/cmssetup.txt"
     fi
+
+    configure_opencms_before "AutoSetup"
 
     CLASSPATH="$(shell_classpath)"
     echo "Install OpenCms using org.opencms.setup.CmsAutoSetup with properties \"${CONFIG_FILE}\"" && \

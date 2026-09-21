@@ -1,13 +1,16 @@
-ARG BASE_IMAGE=jetty:12-jdk25
+ARG BASE_IMAGE=jetty:12.1.13-jdk25
 FROM $BASE_IMAGE
 LABEL org.opencontainers.image.authors="Alkacon Software GmbH & Co. KG"
 USER root
 ARG SERVLET_CONTAINER=jetty
-ENV SERVLET_CONTAINER=${SERVLET_CONTAINER}
+ARG OPENCMS_WAR_FILE=opencms.war
+ENV SERVLET_CONTAINER=${SERVLET_CONTAINER} \
+    OPENCMS_WAR_FILE=${OPENCMS_WAR_FILE}
 
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    TMPDIR=/tmp
+    TMPDIR=/tmp \
+    AUTOSETUP_CONFIG_DIR=/root/autosetup
 
 ENV CONTAINER_BASE=/container \
     TOMCAT_HOME=/usr/local/tomcat \
@@ -15,7 +18,7 @@ ENV CONTAINER_BASE=/container \
     BASH_ENV=/root/common.sh \
     ARTIFACTS_FOLDER=/artifacts/ \
     CONFIG_FILE=/config/setup.properties \
-    OPENCMS_URL=https://github.com/alkacon/opencms-core/releases/download/build_21_0_1/opencms-21.0.1-distribution.zip \
+    OPENCMS_URL=https://github.com/alkacon/opencms-core/releases/download/build_22_0_0/opencms-22.0-distribution.zip \
     UPDATE_CONFIG_FILES="WEB-INF/web.xml WEB-INF/opencms.tld WEB-INF/config/opencms-search.xml WEB-INF/config/opencms-system.xml WEB-INF/config/opencms-vfs.xml WEB-INF/config/opencms-workplace.xml WEB-INF/solr/configsets/default/conf/solrconfig.xml WEB-INF/solr/spellcheck/conf/solrconfig.xml"
 
 ENV TOMCAT_LIB=${TOMCAT_HOME}/lib \

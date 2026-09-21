@@ -1,0 +1,125 @@
+name: opencms-service-stack
+
+services:
+    mariadb:
+        image: mariadb:latest
+        init: true
+        restart: unless-stopped
+        environment:
+            MARIADB_ROOT_PASSWORD: ${DB_PASSWORD:-opencms-demo}
+        volumes:
+            - mariadb-data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+            interval: 10s
+            timeout: 5s
+            retries: 20
+
+    rustfs:
+        image: rustfs/rustfs:latest
+        init: true
+        restart: unless-stopped
+        environment:
+            RUSTFS_ACCESS_KEY: ${STORAGE_ACCESS_KEY:-opencms}
+            RUSTFS_SECRET_KEY: ${STORAGE_SECRET_KEY:-opencms-demo-secret}
+            RUSTFS_CONSOLE_ENABLE: "true"
+        volumes:
+            - rustfs-data:/data
+        ports:
+            - "${RUSTFS_API_PORT:-9000}:9000"
+            - "${RUSTFS_CONSOLE_PORT:-9001}:9001"
+
+    rustfs-init:
+        image: minio/mc:latest
+        depends_on:
+            - rustfs
+        restart: "no"
+        environment:
+            STORAGE_ACCESS_KEY: ${STORAGE_ACCESS_KEY:-opencms}
+            STORAGE_SECRET_KEY: ${STORAGE_SECRET_KEY:-opencms-demo-secret}
+            STORAGE_DATA_BUCKET: ${STORAGE_DATA_BUCKET:-opencms-data}
+            STORAGE_IMAGE_BUCKET: ${STORAGE_IMAGE_BUCKET:-opencms-imagecache}
+        entrypoint: ["/bin/sh", "-c"]
+        command:
+            - |
+                until mc alias set storage http://rustfs:9000 "$${STORAGE_ACCESS_KEY}" "$${STORAGE_SECRET_KEY}"; do
+                    echo "Waiting for RustFS..."
+                    sleep 2
+                done
+                mc mb --ignore-existing "storage/$${STORAGE_DATA_BUCKET}"
+                mc mb --ignore-existing "storage/$${STORAGE_IMAGE_BUCKET}"
+
+    solr:
+        image: opencms-solr-example:local
+        build:
+            context: ./solr
+            args:
+                OPENCMS_IMAGE: alkacon/opencms-docker:22.0
+                SOLR_VERSION: ${SOLR_VERSION:-10.0.0}
+        init: true
+        restart: unless-stopped
+        command: ["solr-foreground", "--user-managed"]
+        environment:
+            SOLR_HEAP: ${SOLR_HEAP:-1g}
+            SOLR_MODULES: analysis-extras,extraction
+        volumes:
+            - solr-data:/var/solr
+        ports:
+            - "127.0.0.1:${SOLR_PORT:-8983}:8983"
+        healthcheck:
+            test: ["CMD-SHELL", "curl -fsS 'http://localhost:8983/solr/Solr-Online/admin/ping?wt=json' >/dev/null && curl -fsS 'http://localhost:8983/solr/Solr-Offline/admin/ping?wt=json' >/dev/null"]
+            interval: 10s
+            timeout: 5s
+            retries: 30
+            start_period: 30s
+
+    opencms:
+        image: alkacon/opencms-docker:22.0
+        hostname: ${OPENCMS_HOSTNAME:-opencms-service-stack}
+        init: true
+        restart: unless-stopped
+        depends_on:
+            mariadb:
+                condition: service_healthy
+            rustfs-init:
+                condition: service_completed_successfully
+            solr:
+                condition: service_healthy
+        command: ["/root/wait-for.sh", "mariadb:3306", "-t", "60", "--", "/root/opencms-run.sh"]
+        environment:
+            DB_HOST: mariadb
+            DB_PASSWD: ${DB_PASSWORD:-opencms-demo}
+            SERVER_URL: http://localhost
+            OPENCMS_COMPONENTS: ${OPENCMS_COMPONENTS:-workplace,demo}
+            SOLR_URL: ${SOLR_URL:-http://solr:8983/solr}
+            STORAGE_ENDPOINT: http://rustfs:9000
+            STORAGE_ACCESS_KEY: ${STORAGE_ACCESS_KEY:-opencms}
+            STORAGE_SECRET_KEY: ${STORAGE_SECRET_KEY:-opencms-demo-secret}
+            STORAGE_DATA_BUCKET: ${STORAGE_DATA_BUCKET:-opencms-data}
+            STORAGE_IMAGE_BUCKET: ${STORAGE_IMAGE_BUCKET:-opencms-imagecache}
+            STORAGE_THRESHOLD: ${STORAGE_THRESHOLD:-0}
+            STORAGE_MAX_CONNECTIONS: ${STORAGE_MAX_CONNECTIONS:-50}
+        volumes:
+            - ./opencms:/root/autosetup:ro
+            - opencms-webapps:/container/webapps
+        ports:
+            - "${OPENCMS_PORT:-8080}:8080"
+
+    nginx:
+        image: nginx:alpine
+        init: true
+        restart: unless-stopped
+        depends_on:
+            - opencms
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+            - nginx-media-cache:/var/cache/nginx/media
+        ports:
+            - "${NGINX_PORT:-80}:80"
+
+volumes:
+    mariadb-data:
+    nginx-media-cache:
+    opencms-webapps:
+    rustfs-data:
+    solr-data:

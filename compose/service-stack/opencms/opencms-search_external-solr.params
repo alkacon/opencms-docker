@@ -1,0 +1,1 @@
+--stringparam solr_url "${SOLR_URL}"

@@ -10,11 +10,10 @@ Welcome to the official OpenCms Docker image maintained by [Alkacon](https://git
 
 Here you find a Docker Compose setup with a ready to use OpenCms installation including Jetty and MariaDB.
 
-OpenCms can be used with other databases as described below.
-
 ## Available tags
 
-* [latest, 21.1](https://github.com/alkacon/opencms-docker/blob/21.1/image/Dockerfile)
+* [latest, 22.0](https://github.com/alkacon/opencms-docker/blob/22.0/image/Dockerfile)
+* [21.1](https://github.com/alkacon/opencms-docker/blob/21.1/image/Dockerfile)
 * [21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
 * [20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
 * [20.0](https://github.com/alkacon/opencms-docker/blob/20.0/image/Dockerfile)
@@ -50,7 +49,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:21.1
+        image: alkacon/opencms-docker:22.0
         container_name: opencms
         init: true
         restart: always
@@ -114,13 +113,19 @@ The variables `DB_PASSWD` and `DB_PASSWD_FILE` respectively `ADMIN_PASSWD` and `
 
 ## Upgrade the image
 
+> **Important: Migrating from javax to Jakarta**
+>
+> The automatic Docker update updates the OpenCms core only. It does not update the installed Mercury template or user-installed extensions.
+>
+> When migrating an existing javax-based installation to the Jakarta variant of OpenCms 22, you must manually update the installed Mercury template to a compatible Jakarta version. In addition, check all your custom modules as well as custom JARs and JSPs for compatibility with OpenCms 22 and Jakarta, and update them where necessary.
+
 *Before upgrading the image, make sure that you have persisted your OpenCms data and MariaDB data with Docker volumes as described above. Otherwise you will lose your data.*
 
 Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:21.1
+        image: alkacon/opencms-docker:22.0
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
@@ -131,19 +136,13 @@ You can follow the installation process with `docker compose logs -f opencms`.
 
 *It is recommended to remove the* `/container/webapps/ROOT/WEB-INF/index` *folder after upgrade and do a full Solr reindex.*
 
-## Support for other databases
+## Demo projects
 
-OpenCms uses a special configuration file called [setup.properties](https://github.com/alkacon/opencms-core/blob/master/src-setup/org/opencms/setup/setup.properties.example) to establish a database connection.
+Additional focused demos are available below [`compose`](compose):
 
-In order to connect to a database other than MariaDB, this image supports connection via a custom *setup.properties* file.
-
-The file must be named `custom-setup.properties` and must be available in the root folder of the docker container.
-
-An example setup for PostgreSQL can be found [here](https://github.com/alkacon/opencms-docker/tree/master/compose/postgres).
-
-For more information on the DB configuration options, see the [OpenCms documentation](https://documentation.opencms.org/opencms-documentation/server-administration/headless-installation/).
-
-Note: when using a custom configuration file, the environment variables `DB_HOST, DB_USER, DB_PASSWD, DB_NAME, OPENCMS_COMPONENTS, SERVER_URL` are ignored.
+* [`compose/postgres`](compose/postgres) demonstrates how to use PostgreSQL instead of MariaDB.
+* [`compose/build-tomcat`](compose/build-tomcat) demonstrates how to build the OpenCms image with Tomcat instead of Jetty.
+* [`compose/service-stack`](compose/service-stack) demonstrates a service-stack deployment with RustFS, NGINX and Solr.
 
 ## Building the image
 
@@ -155,4 +154,4 @@ Go to the repository's main folder and type `docker compose build opencms`.
 
 ## License
 
-View the [licence information on GitHub](https://github.com/alkacon/opencms-docker/blob/master/LICENSE).
+View the [licence information on GitHub](https://github.com/alkacon/opencms-docker/blob/main/LICENSE).

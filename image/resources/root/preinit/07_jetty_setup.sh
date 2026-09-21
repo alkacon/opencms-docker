@@ -6,5 +6,5 @@ if [ "$SERVLET_CONTAINER" != "jetty" ]; then
 fi
 
 cd $CONTAINER_BASE
-java -jar $JETTY_HOME/start.jar --add-modules=ee8-deploy,ee8-jsp,ee8-jstl,server,http,gzip
+java -jar $JETTY_HOME/start.jar --add-modules=ee10-deploy,ee10-jsp,ee10-jstl,server,http,gzip
 echo "$JETTY_OPTS" > jetty-opts.txt
