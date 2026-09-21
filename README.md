@@ -10,11 +10,10 @@ Welcome to the official OpenCms Docker image maintained by [Alkacon](https://git
 
 Here you find a Docker Compose setup with a ready to use OpenCms installation including Jetty and MariaDB.
 
-OpenCms can be used with other databases as described below.
-
 ## Available tags
 
-* [latest, 21.1](https://github.com/alkacon/opencms-docker/blob/21.1/image/Dockerfile)
+* [22.0-javax](https://github.com/alkacon/opencms-docker/blob/22.0-javax/image/Dockerfile)
+* [21.1](https://github.com/alkacon/opencms-docker/blob/21.1/image/Dockerfile)
 * [21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
 * [20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
 * [20.0](https://github.com/alkacon/opencms-docker/blob/20.0/image/Dockerfile)
@@ -31,6 +30,10 @@ OpenCms can be used with other databases as described below.
 * [11.0.0](https://github.com/alkacon/opencms-docker/blob/11.0.0/image/Dockerfile)
 
 Images for older OpenCms versions are also available, see [here](https://github.com/alkacon/opencms-docker/blob/pre_11_images/README.md).
+
+OpenCms 22 is the final OpenCms release available as a Java EE (`javax`) image. Starting with
+OpenCms 23, Docker images are provided for Jakarta EE only. For new installations, use the
+[OpenCms 22 Jakarta image](https://hub.docker.com/r/alkacon/opencms-docker/tags?name=22.0).
 
 ## How to use this image
 
@@ -50,7 +53,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:21.1
+        image: alkacon/opencms-docker:22.0-javax
         container_name: opencms
         init: true
         restart: always
@@ -120,7 +123,7 @@ Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:21.1
+        image: alkacon/opencms-docker:22.0-javax
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
@@ -131,19 +134,12 @@ You can follow the installation process with `docker compose logs -f opencms`.
 
 *It is recommended to remove the* `/container/webapps/ROOT/WEB-INF/index` *folder after upgrade and do a full Solr reindex.*
 
-## Support for other databases
+## Demo projects
 
-OpenCms uses a special configuration file called [setup.properties](https://github.com/alkacon/opencms-core/blob/master/src-setup/org/opencms/setup/setup.properties.example) to establish a database connection.
+Additional focused demos are available below [`compose`](compose):
 
-In order to connect to a database other than MariaDB, this image supports connection via a custom *setup.properties* file.
-
-The file must be named `custom-setup.properties` and must be available in the root folder of the docker container.
-
-An example setup for PostgreSQL can be found [here](https://github.com/alkacon/opencms-docker/tree/master/compose/postgres).
-
-For more information on the DB configuration options, see the [OpenCms documentation](https://documentation.opencms.org/opencms-documentation/server-administration/headless-installation/).
-
-Note: when using a custom configuration file, the environment variables `DB_HOST, DB_USER, DB_PASSWD, DB_NAME, OPENCMS_COMPONENTS, SERVER_URL` are ignored.
+* [`compose/postgres`](compose/postgres) demonstrates how to use PostgreSQL instead of MariaDB.
+* [`compose/build-tomcat`](compose/build-tomcat) demonstrates how to build the OpenCms image with Tomcat instead of Jetty.
 
 ## Building the image
 

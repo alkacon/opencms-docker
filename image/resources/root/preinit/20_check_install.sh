@@ -65,11 +65,19 @@ then
             rm -f -v ${OPENCMS_HOME}/${CORE_LIB}
         done
     fi
-    echo "Moving new JARs"
-    mv ${ARTIFACTS_FOLDER}libs/* ${OPENCMS_HOME}/WEB-INF/lib/
+    echo "Replacing library directories"
+    for SOURCE_DIR in "${ARTIFACTS_FOLDER}libs/"*/
+    do
+        if [ -d "${SOURCE_DIR}" ]; then
+            TARGET_DIR="${OPENCMS_HOME}/WEB-INF/lib/$(basename "${SOURCE_DIR}")"
+            rm -rf "${TARGET_DIR}"
+        fi
+    done
+    echo "Moving new JARs and library directories"
+    mv "${ARTIFACTS_FOLDER}libs/"* "${OPENCMS_HOME}/WEB-INF/lib/" || exit $?
 
     echo "Update modules core"
-    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh
+    bash /root/execute-opencms-shell.sh /config/update-core-modules.ocsh || exit $?
 else
     echo "OpenCms not installed yet, running setup"
     if [ ! -d ${WEBAPPS_HOME} ]; then

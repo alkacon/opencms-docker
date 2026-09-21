@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "=== START OPENCMS SHELL ==="
 echo "Installing modules from ${1}"
 

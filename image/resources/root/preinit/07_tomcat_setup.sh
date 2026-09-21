@@ -33,6 +33,9 @@ sed -i "s/<\/Context>/<Resources cachingAllowed=\"true\" cacheMaxSize=\"${WEBRES
 echo "Disabling session persistence and adding JAR scanner filter ..."
 sed -i "s/<\/Context>/<Manager pathname=\"\" \/><JarScanner><JarScanFilter pluggabilitySkip=\"\*.jar\" tldSkip=\"\*.jar\" tldScan=\"javax.servlet.jsp.jstl-\*.jar\"\/><\/JarScanner><\/Context>/" ${TOMCAT_HOME}/conf/context.xml
 
+# Tomcat tries to create this directory after privileges have been dropped to the OpenCms user.
+mkdir -p ${TOMCAT_HOME}/conf/Catalina/localhost
+
 
 echo "Setting java opts for Tomcat to: ${TOMCAT_OPTS}"
 echo "JAVA_OPTS=\"-Djava.awt.headless=true -DDISPLAY=:0.0 ${TOMCAT_OPTS}\"" > ${TOMCAT_HOME}/bin/setenv.sh

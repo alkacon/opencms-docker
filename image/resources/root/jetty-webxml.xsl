@@ -17,7 +17,6 @@
 				<xsl:value-of select="$cookie_name" />
 			</name>
 		</cookie-config>
-		<xsl:apply-templates />
 	</xsl:template>
 
     <!--  Insert ExpiresFilter after display-name, so it comes first (if it's not already defined) -->
