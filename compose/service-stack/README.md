@@ -81,7 +81,7 @@ setup.
 
 [`20_configure_storage.sh`](opencms/20_configure_storage.sh) stores generated image derivatives in
 the separate `opencms-imagecache` RustFS bucket. OpenCms does not maintain image derivatives below
-`WEB-INF/imagecache` in this setup.
+`WEB-INF/imagecache` in this setup. 
 
 [`opencms-system_imagecache.xslt`](opencms/opencms-system_imagecache.xslt) configures a fixed
 60-day retention period for these derivatives.
