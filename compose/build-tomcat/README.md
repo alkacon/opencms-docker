@@ -1,6 +1,6 @@
 # OpenCms with Tomcat
 
-This Docker Compose project demonstrates how to build and run the OpenCms javax image with Tomcat
+This Docker Compose project demonstrates how to build and run the OpenCms legacy variant with Tomcat
 instead of the default Jetty servlet container.
 
 [`docker-compose.yml`](docker-compose.yml) builds the image from [`../../image`](../../image) with

@@ -12,7 +12,7 @@ Here you find a Docker Compose setup with a ready to use OpenCms installation in
 
 ## Available tags
 
-* [22.0-javax](https://github.com/alkacon/opencms-docker/blob/22.0-javax/image/Dockerfile)
+* [22.0-legacy](https://github.com/alkacon/opencms-docker/blob/22.0-legacy/image/Dockerfile)
 * [21.1](https://github.com/alkacon/opencms-docker/blob/21.1/image/Dockerfile)
 * [21.0](https://github.com/alkacon/opencms-docker/blob/21.0/image/Dockerfile)
 * [20.1](https://github.com/alkacon/opencms-docker/blob/20.1/image/Dockerfile)
@@ -31,9 +31,11 @@ Here you find a Docker Compose setup with a ready to use OpenCms installation in
 
 Images for older OpenCms versions are also available, see [here](https://github.com/alkacon/opencms-docker/blob/pre_11_images/README.md).
 
-OpenCms 22 is the final OpenCms release available as a Java EE (`javax`) image. Starting with
-OpenCms 23, Docker images are provided for Jakarta EE only. For new installations, use the
-[OpenCms 22 Jakarta image](https://hub.docker.com/r/alkacon/opencms-docker/tags?name=22.0).
+The OpenCms 22 Docker image is available in two variants: a Jakarta EE variant compatible with Jakarta EE, and a legacy variant compatible with Java EE 8.
+
+**This branch contains the legacy variant of OpenCms 22 compatiable with EE 8.**
+
+The Jakarta variant of OpenCms 22 is available [here](https://hub.docker.com/r/alkacon/opencms-docker/tags?name=22.0).
 
 ## How to use this image
 
@@ -53,7 +55,7 @@ services:
         environment:
             - "MYSQL_ROOT_PASSWORD=secretDBpassword"
     opencms:
-        image: alkacon/opencms-docker:22.0-javax
+        image: alkacon/opencms-docker:22.0-legacy
         container_name: opencms
         init: true
         restart: always
@@ -123,7 +125,7 @@ Enter the target version of the OpenCms image in your docker-compose.yml file.
 
 ```
     opencms:
-        image: alkacon/opencms-docker:22.0-javax
+        image: alkacon/opencms-docker:22.0-legacy
 ```
 
 Navigate to the folder with the docker-compose.yml file and execute `docker-compose up -d`.
