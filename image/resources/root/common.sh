@@ -68,7 +68,20 @@ function kill_container() {
     fi
     if [[ ! -z "$pid" ]] ; then
         kill -TERM "$pid"
-        wait "$pid" >/dev/null
+        # The servlet container is a grandchild of this shell (gosu ... sh -c), so
+        # "wait" would fail with "not a child of this shell" (exit 127). Poll the
+        # pid instead and give OpenCms time to shut down cleanly (Solr, indexer).
+        # Keep the timeout below the stop_grace_period of the compose service.
+        local timeout=80
+        local waited=0
+        while kill -0 "$pid" 2>/dev/null ; do
+            if [ "$waited" -ge "$timeout" ] ; then
+                echo "Servlet container (pid $pid) still running after ${timeout}s, giving up."
+                return 1
+            fi
+            sleep 1
+            waited=$((waited + 1))
+        done
     fi
 }
 
