@@ -78,6 +78,7 @@ services:
         hostname: ${OPENCMS_HOSTNAME:-opencms-service-stack}
         init: true
         restart: unless-stopped
+        stop_grace_period: 90s
         depends_on:
             mariadb:
                 condition: service_healthy
