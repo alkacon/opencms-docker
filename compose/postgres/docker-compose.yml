@@ -13,6 +13,7 @@ services:
         image: alkacon/opencms-docker:latest
         container_name: opencms
         init: true
+        stop_grace_period: 90s
 #        restart: always
         depends_on: [ "postgres" ]
         ports:

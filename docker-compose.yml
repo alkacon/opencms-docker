@@ -18,6 +18,8 @@ services:
                 BASE_IMAGE: jetty:12.1.13-jdk25
         init: true
         restart: always
+        # opencms-run.sh waits up to 80 s for a clean OpenCms shutdown on SIGTERM
+        stop_grace_period: 90s
         depends_on: [ "mariadb" ]
         links:
             - "mariadb:mysql"

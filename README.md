@@ -70,6 +70,7 @@ services:
         container_name: opencms
         init: true
         restart: always
+        stop_grace_period: 90s
         depends_on: [ "mariadb" ]
         links:
             - "mariadb:mysql"

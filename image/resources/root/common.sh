@@ -61,15 +61,46 @@ function start_jetty() {
 
 function kill_container() {
     local pid=""
-    if [ -d $TOMCAT_HOME ] ; then
-        pid=$(pgrep -f org.apache.catalina.startup.Bootstrap)
+    local candidates=""
+    local candidate
+    if [ -d "$TOMCAT_HOME" ] ; then
+        candidates=$(pgrep -f 'org\.apache\.catalina\.startup\.Bootstrap')
     else
-        pid=$(pgrep -f $JETTY_HOME/start.jar)
+        candidates=$(pgrep -f "$JETTY_HOME/start.jar")
     fi
-    if [[ ! -z "$pid" ]] ; then
-        kill -TERM "$pid"
-        wait "$pid" >/dev/null
+    # The sh -c wrapper also contains the Jetty command line. Only select the JVM,
+    # not its wrapper, and never pass multiple PIDs as one argument to kill.
+    for candidate in $candidates ; do
+        if [ "$(cat "/proc/$candidate/comm" 2>/dev/null)" != "java" ] ; then
+            continue
+        fi
+        if [ -n "$pid" ] ; then
+            echo "Multiple servlet container JVMs found ($pid, $candidate); refusing ambiguous shutdown." >&2
+            return 1
+        fi
+        pid=$candidate
+    done
+    if [ -n "$pid" ] ; then
+        if ! kill -TERM "$pid" ; then
+            echo "Failed to send SIGTERM to servlet container (pid $pid)." >&2
+            return 1
+        fi
+        # The servlet container is a grandchild of this shell (gosu ... sh -c), so
+        # "wait" would fail with "not a child of this shell" (exit 127). Poll the
+        # pid instead and give OpenCms time to shut down cleanly (Solr, indexer).
+        # Keep the timeout below the stop_grace_period of the compose service.
+        local timeout=80
+        local waited=0
+        while kill -0 "$pid" 2>/dev/null ; do
+            if [ "$waited" -ge "$timeout" ] ; then
+                echo "Servlet container (pid $pid) still running after ${timeout}s, giving up."
+                return 1
+            fi
+            sleep 1
+            waited=$((waited + 1))
+        done
     fi
+    return 0
 }
 
 function jetty_opts() {

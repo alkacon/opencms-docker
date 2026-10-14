@@ -23,8 +23,9 @@ start_container
 date > ${OPENCMS_HOME}/WEB-INF/opencms-starttime
 
 function kill_container_and_exit() {
+    # exit 0 after a clean shutdown, non-zero if kill_container gave up waiting
     kill_container
-    exit
+    exit $?
 }
 trap "kill_container_and_exit" SIGTERM
 
