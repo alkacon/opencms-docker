@@ -31,6 +31,10 @@ read -r -d '' REPLACE_WEBXML << EOM
             <param-value>access plus 24 hours</param-value>
         </init-param>
         <init-param>
+            <param-name>ExpiresByType text/javascript</param-name>
+            <param-value>access plus 24 hours</param-value>
+        </init-param>
+        <init-param>
             <param-name>ExpiresDefault</param-name>
             <param-value>access plus 365 days</param-value>
         </init-param>
